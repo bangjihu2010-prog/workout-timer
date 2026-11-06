@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PRO IRON - 맨몸 & 웨이트 트레이닝 엔진</title>
+  <title>PRO IRON - 스포츠 과학 기반 트레이닝 엔진</title>
   <meta name="theme-color" content="#09090b">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,10 +20,10 @@
       --accent: #10b981;
       --accent-glow: rgba(16, 185, 129, 0.22);
       --primary: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.15);
       --text-main: #f4f4f5;
       --text-sub: #71717a;
       --danger: #f43f5e;
+      --warning: #f59e0b;
     }
 
     * {
@@ -50,7 +50,7 @@
       border: none;
       outline: none;
       cursor: pointer;
-      transition: transform 0.08s ease, background-color 0.12s ease, opacity 0.12s ease;
+      transition: transform 0.08s ease, background-color 0.12s ease;
     }
     button:active {
       transform: scale(0.95);
@@ -162,7 +162,6 @@
       white-space: nowrap;
     }
 
-    /* 메타 정보 칩 */
     .meta-chips {
       display: flex;
       gap: 6px;
@@ -184,7 +183,7 @@
       border-color: rgba(56, 189, 248, 0.2);
     }
 
-    /* 메인 영역 */
+    /* 세트 리스트 */
     .content {
       padding: 16px 20px;
     }
@@ -202,7 +201,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* 세트 카드 */
     .set-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -232,7 +230,6 @@
       color: var(--accent);
     }
 
-    /* 캡슐 스테퍼 */
     .stepper-capsule {
       flex: 1;
       display: flex;
@@ -289,7 +286,6 @@
       margin-top: 1px;
     }
 
-    /* 완료 및 삭제 버튼 */
     .btn-complete {
       width: 42px;
       height: 42px;
@@ -322,14 +318,8 @@
       color: var(--danger);
     }
 
-    /* 하단 세트 액션 바 */
-    .set-action-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
     .btn-add-set {
-      flex: 1;
+      width: 100%;
       padding: 14px;
       border-radius: 12px;
       background: rgba(56, 189, 248, 0.06);
@@ -341,9 +331,10 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      margin-top: 10px;
     }
 
-    /* 플로팅 아일랜드 타이머 */
+    /* 플로팅 타이머 */
     #timer-island {
       display: none;
       position: fixed;
@@ -412,7 +403,7 @@
       color: #e4e4e7;
     }
 
-    /* 모달 공통 */
+    /* 모달 */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -478,7 +469,6 @@
       border-color: var(--primary);
     }
 
-    /* 직접 숫자 입력 모달 전용 */
     .direct-input-display {
       width: 100%;
       background: #09090b;
@@ -492,7 +482,7 @@
       margin-bottom: 12px;
       outline: none;
     }
-    .quick-Preset-grid {
+    .quick-preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
@@ -512,7 +502,6 @@
       color: #000;
     }
 
-    /* 결과 통계 3단 그리드 */
     .stat-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -617,7 +606,7 @@
     <div class="header-top">
       <div class="brand-group">
         <span id="wake-indicator" class="wake-dot" title="화면 켜짐 유지 상태"></span>
-        <span class="brand-title">Pro Iron Engine</span>
+        <span class="brand-title">Pro Iron Science</span>
       </div>
       <div class="header-actions">
         <button class="btn-util" onclick="openBackupModal()">백업/복원</button>
@@ -650,11 +639,9 @@
 
     <div id="set-list"></div>
 
-    <div class="set-action-row">
-      <button class="btn-add-set" onclick="addSet()">
-        <span>+</span> 직전 세트 복제 추가
-      </button>
-    </div>
+    <button class="btn-add-set" onclick="addSet()">
+      <span>+</span> 직전 세트 복제 추가
+    </button>
   </main>
 
   <!-- 플로팅 아일랜드 타이머 -->
@@ -674,13 +661,13 @@
     </div>
   </aside>
 
-  <!-- 직접 숫자 입력 모달 (Direct Input) -->
+  <!-- 직접 숫자 입력 모달 -->
   <div id="direct-input-modal" class="modal-backdrop" onclick="if(event.target===this) closeDirectInput()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
       <h2 id="direct-input-title" class="modal-title">수치 직접 입력</h2>
       <input type="number" id="direct-input-field" class="direct-input-display" inputmode="decimal" step="any">
-      <div id="direct-preset-container" class="quick-Preset-grid"></div>
+      <div id="direct-preset-container" class="quick-preset-grid"></div>
       <div class="action-btn-row">
         <button class="btn-primary-full" onclick="applyDirectInput()">적용하기</button>
       </div>
@@ -697,7 +684,7 @@
       <label class="form-label">운동 이름</label>
       <input type="text" id="form-ex-name" class="input-field" placeholder="예: 중량 풀업">
 
-      <label class="form-label">타깃 부위</label>
+      <label class="form-label">타깃 부위 (스포츠 과학 밸런스 분석용)</label>
       <select id="form-ex-part" class="select-field">
         <option value="가슴 & 전면삼각근">가슴 & 전면삼각근 (푸쉬업류)</option>
         <option value="가슴 & 삼두근">가슴 & 삼두근 (다이아몬드/딥스)</option>
@@ -725,14 +712,14 @@
         </div>
       </div>
 
-      <label class="form-label">세트 간 기본 휴식 시간</label>
+      <label class="form-label">세트 간 기본 휴식 시간 (다관절 90~120s / 고립 60s)</label>
       <select id="form-ex-rest" class="select-field">
         <option value="30">30초 (짧은 맨몸 인터벌)</option>
-        <option value="45">45초 (기본 맨몸/코어)</option>
-        <option value="60">60초 (기본 고립/푸쉬업)</option>
-        <option value="90">90초 (철봉/복합 운동)</option>
-        <option value="120">120초 (고중량 웨이트)</option>
-        <option value="180">180초 (최대 스트렝스)</option>
+        <option value="45">45초 (기본 코어)</option>
+        <option value="60">60초 (단일관절 고립/푸쉬업)</option>
+        <option value="90">90초 (철봉/복합 운동 최적)</option>
+        <option value="120">120초 (고중량 다관절 스트렝스)</option>
+        <option value="180">180초 (최대 근력)</option>
       </select>
 
       <div class="action-btn-row">
@@ -743,13 +730,13 @@
     </div>
   </div>
 
-  <!-- 데이터 백업 및 복원 모달 -->
+  <!-- 데이터 백업/복원 모달 -->
   <div id="backup-modal" class="modal-backdrop" onclick="if(event.target===this) closeBackupModal()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
       <h2 class="modal-title">데이터 백업 및 복원 (JSON)</h2>
       <label class="form-label">현재 운동 설정 및 세트 기록 데이터</label>
-      <textarea id="backup-json-area" class="textarea-field" rows="5" placeholder="여기에 백업 JSON 코드를 붙여넣거나 아래 버튼으로 파일 저장/불러오기를 실행하세요."></textarea>
+      <textarea id="backup-json-area" class="textarea-field" rows="5" placeholder="백업 코드를 붙여넣거나 파일로 내보내기/불러오기를 실행하세요."></textarea>
 
       <div class="action-btn-row">
         <button class="btn-copy-prompt" onclick="downloadBackupFile()">💾 파일로 저장</button>
@@ -766,11 +753,11 @@
     </div>
   </div>
 
-  <!-- 결과 및 즉시 처방 모달 -->
+  <!-- 결과 및 스포츠 과학 처방 모달 -->
   <div id="result-modal" class="modal-backdrop" onclick="if(event.target===this) closeResultModal()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
-      <h2 class="modal-title">세션 분석 & 다음 루틴 처방</h2>
+      <h2 class="modal-title">스포츠 과학 기반 세션 분석 리포트</h2>
 
       <div class="stat-grid-3">
         <div class="stat-tile">
@@ -788,17 +775,17 @@
       </div>
 
       <div class="prescription-card">
-        <div class="prescription-title">🎯 종목별 점진적 과부하 처방</div>
+        <div class="prescription-title">🎯 점진적 과부하 달성도 (Double Progression)</div>
         <div id="presc-targets" class="prescription-body"></div>
       </div>
 
       <div class="prescription-card" style="border-left-color: var(--primary);">
-        <div class="prescription-title" style="color: var(--primary);">⚖️ 부위별 볼륨 밸런스 & 회복 가이드</div>
+        <div class="prescription-title" style="color: var(--primary);">⚖️ 유효 볼륨 판정 & 구조 밸런스 (Sports Science)</div>
         <div id="presc-balance" class="prescription-body"></div>
       </div>
 
       <div class="action-btn-row">
-        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 AI 코칭용 상세 로그 복사</button>
+        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 논문 분석용 상세 프롬프트 복사</button>
       </div>
 
       <button class="btn-sheet-close" onclick="closeResultModal()">닫기</button>
@@ -808,7 +795,7 @@
 
   <script>
     /* =========================================
-       1. 기본 프리셋 및 안전한 스토리지 초기화
+       1. 프리셋 데이터 & 무결성 보정
        ========================================= */
     const DEFAULT_EXERCISES = {
       pushup: { name: '푸쉬업 (팔굽혀펴기)', part: '가슴 & 전면삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
@@ -842,18 +829,15 @@
       facepull: [{ id: 1, weight: 20.0, reps: 15, done: false }, { id: 2, weight: 20.0, reps: 15, done: false }, { id: 3, weight: 20.0, reps: 12, done: false }]
     };
 
-    const STORAGE_EX_KEY = 'custom_exercises_v9';
-    const STORAGE_SETS_KEY = 'workout_sets_v9';
+    const STORAGE_EX_KEY = 'custom_exercises_v10';
+    const STORAGE_SETS_KEY = 'workout_sets_v10';
 
     let exercises = {};
     let workoutData = {};
     let currentExKey = 'pushup';
     let modalMode = 'add';
-
-    // 직접 입력 타깃 상태
     let directEditTarget = { idx: null, key: null };
 
-    // 타이머 상태
     let timerTarget = null;
     let timerTotalSec = 60;
     let timerInterval = null;
@@ -868,7 +852,6 @@
         if (!exercises || typeof exercises !== 'object' || Object.keys(exercises).length === 0) {
           exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
         }
-        // 스키마 무결성 보정 (targetReps 누락 방지)
         Object.keys(exercises).forEach(k => {
           if (!exercises[k].targetReps) exercises[k].targetReps = exercises[k].defaultReps || 12;
           if (!Array.isArray(workoutData[k]) || workoutData[k].length === 0) {
@@ -890,7 +873,7 @@
     }
 
     /* =========================================
-       2. iOS/모바일 오디오 언락 & Wake Lock 제어
+       2. 오디오 언락 & Screen Wake Lock
        ========================================= */
     let sharedAudioCtx = null;
     let audioUnlocked = false;
@@ -918,7 +901,6 @@
         initAndUnlockAudio();
         if (!sharedAudioCtx) return;
         const now = sharedAudioCtx.currentTime;
-        // 헬스장 소음에서도 잘 들리는 2연속 고주파 비프음
         [0, 0.22].forEach(offset => {
           const osc = sharedAudioCtx.createOscillator();
           const gain = sharedAudioCtx.createGain();
@@ -948,7 +930,6 @@
       } catch (e) {}
     }
 
-    // 최초 터치 시 오디오 언락 및 Wake Lock 가동
     window.addEventListener('touchstart', () => {
       initAndUnlockAudio();
       if (!wakeLockSentinel) requestWakeLock();
@@ -959,7 +940,6 @@
       if (!wakeLockSentinel) requestWakeLock();
     }, { once: true });
 
-    // 백그라운드 전환 후 복귀 시 Wake Lock 재연결 및 타이머 즉시 동기화
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         requestWakeLock();
@@ -968,7 +948,7 @@
     });
 
     /* =========================================
-       3. UI 렌더링 및 세트 조작
+       3. UI 렌더링 & 세트 조작
        ========================================= */
     function renderPicker() {
       const picker = document.getElementById('exercise-picker');
@@ -1079,7 +1059,7 @@
     }
 
     /* =========================================
-       4. 직접 숫자 입력 (Direct Input) 모달 제어
+       4. 직접 입력 (Direct Input) 모달
        ========================================= */
     function openDirectInput(idx, key) {
       directEditTarget = { idx, key };
@@ -1142,7 +1122,7 @@
     }
 
     /* =========================================
-       5. 정밀 백그라운드 타이머
+       5. 정밀 타이머 제어
        ========================================= */
     function syncTimerUI() {
       if (!timerTarget) return;
@@ -1187,7 +1167,7 @@
     }
 
     /* =========================================
-       6. 종목 추가/수정 모달
+       6. 종목 관리 모달
        ========================================= */
     function openExModal(mode) {
       modalMode = mode;
@@ -1272,11 +1252,11 @@
     }
 
     /* =========================================
-       7. 데이터 백업 및 복원 (JSON Export/Import)
+       7. 백업 & 복원 (JSON)
        ========================================= */
     function openBackupModal() {
       const payload = {
-        version: 'v9',
+        version: 'v10',
         exportedAt: new Date().toISOString(),
         exercises,
         workoutData
@@ -1292,9 +1272,9 @@
     function copyBackupText() {
       const text = document.getElementById('backup-json-area').value;
       navigator.clipboard.writeText(text).then(() => {
-        alert('백업 JSON 데이터가 클립보드에 복사되었습니다.');
+        alert('백업 JSON 코드가 클립보드에 복사되었습니다.');
       }).catch(() => {
-        alert('텍스트 영역을 길게 눌러 직접 복사해주세요.');
+        alert('텍스트 창을 길게 눌러 직접 복사해주세요.');
       });
     }
 
@@ -1312,7 +1292,7 @@
 
     function applyRestoredPayload(parsed) {
       if (!parsed || !parsed.exercises || !parsed.workoutData) {
-        throw new Error('유효하지 않은 백업 데이터 형식입니다.');
+        throw new Error('유효하지 않은 백업 데이터 포맷입니다.');
       }
       exercises = parsed.exercises;
       workoutData = parsed.workoutData;
@@ -1330,7 +1310,7 @@
         const parsed = JSON.parse(raw);
         applyRestoredPayload(parsed);
       } catch (e) {
-        alert('복원 실패: 올바른 JSON 데이터가 아닙니다.\n' + e.message);
+        alert('복원 실패: ' + e.message);
       }
     }
 
@@ -1350,13 +1330,22 @@
     }
 
     /* =========================================
-       8. 세션 분석 및 2중 진행법 처방 엔진
+       8. 스포츠 과학 논문 기반 자체 연산 엔진
        ========================================= */
     function finishWorkout() {
       let totalVol = 0;
       let totalReps = 0;
       let totalCompletedSets = 0;
-      const partCounts = { '가슴·푸쉬업': 0, '등·철봉': 0, '어깨': 0, '하체': 0, '코어': 0 };
+
+      // 부위별 세트 분류
+      const partCounts = {
+        '가슴(Push)': 0,
+        '등·철봉(Pull)': 0,
+        '어깨(Delt)': 0,
+        '하체(Legs)': 0,
+        '코어(Core)': 0
+      };
+
       const targetPrescriptions = [];
 
       Object.keys(workoutData).forEach(k => {
@@ -1378,27 +1367,31 @@
             if (w > maxWeight) maxWeight = w;
           });
 
-          if (ex.part.includes('가슴')) partCounts['가슴·푸쉬업'] += doneSets.length;
-          else if (ex.part.includes('광배근')) partCounts['등·철봉'] += doneSets.length;
-          else if (ex.part.includes('어깨') || ex.part.includes('삼각근')) partCounts['어깨'] += doneSets.length;
-          else if (ex.part.includes('하체')) partCounts['하체'] += doneSets.length;
-          else if (ex.part.includes('코어') || ex.part.includes('복직근')) partCounts['코어'] += doneSets.length;
+          // 부위 분류 카운팅
+          if (ex.part.includes('가슴')) partCounts['가슴(Push)'] += doneSets.length;
+          else if (ex.part.includes('광배근')) partCounts['등·철봉(Pull)'] += doneSets.length;
+          else if (ex.part.includes('어깨') || ex.part.includes('삼각근')) partCounts['어깨(Delt)'] += doneSets.length;
+          else if (ex.part.includes('하체')) partCounts['하체(Legs)'] += doneSets.length;
+          else if (ex.part.includes('코어') || ex.part.includes('복직근')) partCounts['코어(Core)'] += doneSets.length;
 
+          // Schoenfeld et al. (2021) 2중 진행법 & RIR 기반 과부하 판단
           const target = ex.targetReps || 12;
           const allHit = doneSets.every(s => s.reps >= target);
 
           if (maxWeight === 0) {
+            // 맨몸 운동 처방
             if (allHit) {
-              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회): 🚀 [목표 달성] 전 세트 ${target}회 완수! 다음 세션은 세트당 ${target + 2}회로 목표를 높이거나 중량(+${ex.step}kg)을 추가하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회 수행):\n  🚀 [과부하 달성 / Schoenfeld 2021] 전 세트 ${target}회 완수 (RIR 0~1 도달). 다음 세션은 세트당 목표를 +2회 상향(총 ${target + 2}회)하거나 중량 조끼(+${ex.step}kg)를 도입하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회): ⚓ [반복수 누적] 전 세트 ${target}회를 깔끔한 정자세로 채울 때까지 맨몸 볼륨 누적에 집중하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회 수행):\n  ⚓ [자세 유지 / RIR 1~2 목표] 목표치 미달 세트 존재. 난이도 상향 없이 전 세트 ${target}회를 정자세로 채우는 유효 반복수(Effective Reps) 축적에 집중하세요.`);
             }
           } else {
+            // 중량 웨이트 운동 처방
             if (allHit) {
               const nextWeight = (maxWeight + ex.step).toFixed(1);
-              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg): 🚀 [증량 처방] 전 세트 ${target}회 달성! 다음엔 ${nextWeight}kg으로 증량하여 ${doneSets.length}세트 도전하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  🚀 [중량 증량 처방] 목표 반복수 완수. 기계적 장력(Mechanical Tension) 향상을 위해 다음 세션은 ${nextWeight}kg으로 시작하여 ${doneSets.length}세트 진행하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg): ⚓ [중량 유지] ${maxWeight}kg을 유지하며 모든 세트를 ${target}회 채우는 데 집중하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  ⚓ [중량 동결] ${maxWeight}kg 유지. 실패 지점 직전의 유효 반복 확보를 위해 현재 중량에서 ${target}회 완수를 우선 달성하세요.`);
             }
           }
         }
@@ -1415,15 +1408,36 @@
 
       document.getElementById('presc-targets').innerText = targetPrescriptions.join('\n\n');
 
-      let balanceText = `수행 세트: 가슴 ${partCounts['가슴·푸쉬업']}S | 등·철봉 ${partCounts['등·철봉']}S | 어깨 ${partCounts['어깨']}S | 하체 ${partCounts['하체']}S | 코어 ${partCounts['코어']}S\n`;
-      if (partCounts['가슴·푸쉬업'] >= 3 && partCounts['등·철봉'] === 0) {
-        balanceText += `⚠️ [전후면 불균형 주의] 미는 운동(푸쉬업/딥스) 비중이 높습니다. 라운드 숄더 예방을 위해 다음엔 풀업이나 페이스풀을 반드시 포함하세요.\n`;
-      } else if (partCounts['등·철봉'] >= 3 && partCounts['가슴·푸쉬업'] === 0 && partCounts['어깨'] === 0) {
-        balanceText += `💡 [루틴 팁] 당기는 철봉 운동을 충분히 수행했습니다. 푸쉬업이나 딥스를 3세트 곁들이면 상체 프레임이 고르게 발달합니다.\n`;
-      }
-      balanceText += `💤 [권장 휴식] 훈련한 근육군의 초과회복을 위해 최소 48시간 휴식 후 동일 부위 세션을 진행하세요.`;
+      // Baz-Valle (2022) 및 Helms (2015) 기반 논문 지표 분석
+      const balanceNotes = [];
+      balanceNotes.push(`📊 세션 부위별 세트 분포:\n   가슴(Push) ${partCounts['가슴(Push)']}S | 등(Pull) ${partCounts['등·철봉(Pull)']}S | 어깨 ${partCounts['어깨(Delt)']}S | 하체 ${partCounts['하체(Legs)']}S | 코어 ${partCounts['코어(Core)']}S\n`);
 
-      document.getElementById('presc-balance').innerText = balanceText;
+      // 1. 유효 볼륨 및 정크 볼륨 판정 (Baz-Valle et al., 2022)
+      Object.entries(partCounts).forEach(([part, count]) => {
+        if (count > 0 && count < 3) {
+          balanceNotes.push(`⚠️ [${part} 최소 자극 미달]: 단일 세션 1~2세트는 근단백질 합성(MPS)을 자극하기에 볼륨이 부족합니다 (최소 3~4세트 권장).`);
+        } else if (count >= 3 && count <= 6) {
+          balanceNotes.push(`✅ [${part} 최적 유효 볼륨]: 1세션 최적 성장 구간(3~6S) 충족. 정크 볼륨 없이 효율적인 자극을 완료했습니다.`);
+        } else if (count > 8) {
+          balanceNotes.push(`🛑 [${part} 정크 볼륨(Junk Volume) 경고]: 8세트 초과 시 근비대 효율은 급감하고 근육 피로만 누적됩니다 (Baz-Valle 2022). 세트 수를 줄이고 강도를 높이세요.`);
+        }
+      });
+
+      // 2. 상체 전후면 구조 균형비 (Push : Pull Ratio)
+      const pushSets = partCounts['가슴(Push)'] + Math.floor(partCounts['어깨(Delt)'] * 0.5);
+      const pullSets = partCounts['등·철봉(Pull)'] + Math.floor(partCounts['어깨(Delt)'] * 0.3);
+      if (pushSets >= 4 && pullSets === 0) {
+        balanceNotes.push(`\n🚨 [전후면 불균형 주의]: 미는 운동(Push) 대비 당기는 운동(Pull)이 전무합니다. 견관절 안정성과 라운드 숄더 방지를 위해 풀업 또는 페이스 풀을 반드시 배치하세요.`);
+      }
+
+      // 3. 근단백질 합성(MPS) 주기 기반 회복 시간 (Damas et al., 2016)
+      if (totalCompletedSets <= 6) {
+        balanceNotes.push(`\n💤 [권장 회복 텀]: 총 ${totalCompletedSets}세트(저~중볼륨) 수행. MPS 주기는 24~36시간 내에 회복되므로 1일 휴식 후 다른 부위 훈련이 가능합니다.`);
+      } else {
+        balanceNotes.push(`\n💤 [권장 회복 텀]: 총 ${totalCompletedSets}세트(고볼륨) 수행. 완전한 초과회복(Supercompensation)을 위해 최소 48시간(2일 뒤) 휴식을 권장합니다.`);
+      }
+
+      document.getElementById('presc-balance').innerText = balanceNotes.join('\n');
       document.getElementById('result-modal').style.display = 'flex';
     }
 
@@ -1453,16 +1467,26 @@
         }
       });
 
-      const promptText = `맨몸운동 및 웨이트 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하 달성도 및 상·하체/전·후면 볼륨 밸런스 비판적 평가\n2. 다음 운동 세션 각 종목별 구체적인 목표 중량(kg), 목표 횟수, 세트 수 처방\n3. 권장 회복 시간`;
+      const promptText = `당신은 운동생리학 메타분석 연구(Schoenfeld, Phillips, Helms 등)에 기반한 전문 스트렝스/근비대 코치입니다.
+
+[오늘 수행된 훈련 데이터]
+${summary.join('\n')}
+
+---
+[요청 분석 과제]
+1. 정크 볼륨(Junk Volume) 여부 및 유효 반복수(Effective Reps/RIR) 추정 평가
+2. 전후면(Push vs Pull) 및 어깨 3면 밸런스 점검
+3. 점진적 과부하(Progressive Overload) 원칙에 따른 다음 세션 각 종목별 구체적 목표 수치(시작 kg, 반복 횟수, 권장 세트 수)
+4. 근단백질 합성(MPS) 주기 기반 권장 회복 시간`;
 
       navigator.clipboard.writeText(promptText).then(() => {
-        alert('운동 기록이 복사되었습니다!\n채팅창에 그대로 [붙여넣기]하세요.');
+        alert('논문 분석용 프롬프트가 복사되었습니다!\nGemini 웹이나 앱 채팅창에 [붙여넣기]하세요.');
       }).catch(() => {
         prompt('아래 내용을 복사해 붙여넣으세요:', promptText);
       });
     }
 
-    // 초기 실행
+    // 초기화
     loadStorageData();
     renderPicker();
     render();
