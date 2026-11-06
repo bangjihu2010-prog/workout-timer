@@ -64,39 +64,17 @@
       color: var(--text-sub);
       text-transform: uppercase;
     }
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-    button { 
-      cursor: pointer; 
-      border: none; 
-      font-family: inherit; 
-      outline: none; 
-      transition: transform 0.08s ease, background-color 0.1s ease; 
-    }
-    button:active { 
-      transform: scale(0.95); 
-    }
-
-    .btn-icon {
-      background: #1e1e24;
-      color: #d4d4d8;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid #2e2e38;
-    }
     .btn-finish-workout {
       background: rgba(244, 63, 94, 0.15);
       color: var(--danger);
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       border: 1px solid rgba(244, 63, 94, 0.3);
+      cursor: pointer;
     }
+    .btn-finish-workout:active { transform: scale(0.95); }
 
     .exercise-bar {
       display: flex;
@@ -137,6 +115,7 @@
       font-weight: 600;
       border: 1px solid #2e2e38;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .meta-chips {
@@ -225,6 +204,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      border: none;
+      cursor: pointer;
     }
     .stepper-btn:active {
       background: var(--primary);
@@ -262,6 +243,7 @@
       justify-content: center;
       font-size: 16px;
       font-weight: 800;
+      cursor: pointer;
     }
     .btn-complete.done {
       background: var(--accent);
@@ -275,6 +257,8 @@
       font-size: 16px;
       padding: 6px;
       border-radius: 6px;
+      border: none;
+      cursor: pointer;
     }
     .btn-del:active {
       color: var(--danger);
@@ -294,6 +278,7 @@
       justify-content: center;
       gap: 6px;
       margin-top: 10px;
+      cursor: pointer;
     }
 
     #timer-island {
@@ -357,6 +342,8 @@
       border-radius: 10px;
       font-size: 12px;
       font-weight: 700;
+      border: none;
+      cursor: pointer;
     }
     .timer-action-skip {
       background: #3f3f46;
@@ -417,9 +404,6 @@
       outline: none;
       margin-bottom: 14px;
     }
-    .input-field:focus, .select-field:focus {
-      border-color: var(--primary);
-    }
 
     .stat-grid {
       display: grid;
@@ -445,37 +429,46 @@
       margin-top: 4px;
     }
 
-    .btn-ai-cta {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .btn-ai-cta:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    .ai-feedback-view {
-      margin-top: 14px;
+    .prescription-card {
       background: #0d0d10;
+      border: 1px solid #222228;
       border-radius: 14px;
       padding: 16px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--accent);
+    }
+    .prescription-title {
       font-size: 13px;
-      line-height: 1.7;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .prescription-body {
+      font-size: 13px;
+      line-height: 1.6;
       color: #d4d4d8;
       white-space: pre-line;
-      min-height: 90px;
-      border: 1px solid #222228;
-      border-left: 4px solid var(--primary);
     }
+
+    .action-btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .btn-copy-prompt {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-copy-prompt:active { background: #38bdf8; color: #000; }
+    
     .btn-sheet-close {
       width: 100%;
       padding: 12px;
@@ -484,7 +477,9 @@
       color: #a1a1aa;
       font-size: 13px;
       font-weight: 600;
-      margin-top: 12px;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
     }
     .btn-sheet-reset {
       width: 100%;
@@ -494,6 +489,8 @@
       font-size: 12px;
       font-weight: 600;
       margin-top: 6px;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -502,10 +499,7 @@
   <header>
     <div class="header-top">
       <span class="brand-title">Pro Workout Engine</span>
-      <div class="header-actions">
-        <button class="btn-icon" onclick="configureApiKey()">API 키</button>
-        <button class="btn-finish-workout" onclick="finishWorkout()">운동 종료</button>
-      </div>
+      <button class="btn-finish-workout" onclick="finishWorkout()">운동 종료 & 처방</button>
     </div>
 
     <div class="exercise-bar">
@@ -537,6 +531,7 @@
     </button>
   </main>
 
+  <!-- 플로팅 타이머 -->
   <aside id="timer-island">
     <div id="timer-progress" class="timer-progress"></div>
     <div class="timer-content">
@@ -551,6 +546,7 @@
     </div>
   </aside>
 
+  <!-- 종목 설정 모달 -->
   <div id="ex-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
@@ -559,7 +555,7 @@
       <label class="form-label">운동 이름</label>
       <input type="text" id="form-ex-name" class="input-field" placeholder="예: 덤벨 숄더 프레스">
 
-      <label class="form-label">타깃 부위 (AI 밸런스 분석용)</label>
+      <label class="form-label">타깃 부위</label>
       <select id="form-ex-part" class="select-field">
         <option value="전면삼각근">전면삼각근</option>
         <option value="측면삼각근">측면삼각근</option>
@@ -587,17 +583,18 @@
       </select>
 
       <div style="display:flex; gap:8px; margin-top:8px;">
-        <button style="flex:1; padding:14px; background:var(--primary); color:#000; border-radius:12px; font-weight:700;" onclick="saveExerciseModal()">저장 완료</button>
-        <button id="btn-delete-ex" style="padding:14px; background:rgba(244,63,94,0.15); color:var(--danger); border-radius:12px; font-weight:700;" onclick="deleteCurrentExercise()">삭제</button>
+        <button style="flex:1; padding:14px; background:var(--primary); color:#000; border-radius:12px; font-weight:700; border:none; cursor:pointer;" onclick="saveExerciseModal()">저장 완료</button>
+        <button id="btn-delete-ex" style="padding:14px; background:rgba(244,63,94,0.15); color:var(--danger); border-radius:12px; font-weight:700; border:none; cursor:pointer;" onclick="deleteCurrentExercise()">삭제</button>
       </div>
       <button class="btn-sheet-close" onclick="closeExModal()">취소</button>
     </div>
   </div>
 
+  <!-- 결과 및 즉각 처방 모달 -->
   <div id="result-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
-      <h2 class="modal-title">세션 리포트 & 다음 루틴 처방</h2>
+      <h2 class="modal-title">세션 분석 & 다음 루틴 처방</h2>
 
       <div class="stat-grid">
         <div class="stat-tile">
@@ -610,22 +607,31 @@
         </div>
       </div>
 
-      <button id="ai-req-btn" class="btn-ai-cta" onclick="requestAiAnalysis()">
-        <span>✦</span> AI 어깨 분석 & 다음 운동 처방
-      </button>
+      <!-- 내장 알고리즘 분석 결과 -->
+      <div class="prescription-card">
+        <div class="prescription-title">🎯 다음 운동 세션 목표 처방</div>
+        <div id="presc-targets" class="prescription-body"></div>
+      </div>
 
-      <div id="ai-result" class="ai-feedback-view">버튼을 누르면 오늘 운동을 분석하고 다음 운동 날 수행할 종목, 중량, 횟수를 처방합니다.</div>
+      <div class="prescription-card" style="border-left-color: var(--primary);">
+        <div class="prescription-title" style="color: var(--primary);">⚖️ 부위 밸런스 & 휴식 지침</div>
+        <div id="presc-balance" class="prescription-body"></div>
+      </div>
+
+      <div class="action-btn-row">
+        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 Gemini 웹용 질문 복사</button>
+      </div>
 
       <button class="btn-sheet-close" onclick="closeResultModal()">닫기</button>
-      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 초기화</button>
+      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 풀기 (새 운동 시작)</button>
     </div>
   </div>
 
   <script>
     const DEFAULT_EXERCISES = {
-      ohp: { name: '오버헤드 프레스', part: '전면·측면 복합', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6 },
-      lateral: { name: '사이드 레터럴 레이즈', part: '측면삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15 },
-      facepull: { name: '페이스 풀', part: '후면삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12 }
+      ohp: { name: '오버헤드 프레스', part: '전면·측면 복합', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6, targetReps: 6 },
+      lateral: { name: '사이드 레터럴 레이즈', part: '측면삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15, targetReps: 15 },
+      facepull: { name: '페이스 풀', part: '후면삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12, targetReps: 15 }
     };
 
     const DEFAULT_SETS = {
@@ -655,8 +661,8 @@
     let timerInterval = null;
 
     try {
-      const savedEx = localStorage.getItem('custom_exercises_v6');
-      const savedSets = localStorage.getItem('workout_sets_v6');
+      const savedEx = localStorage.getItem('custom_exercises_v7');
+      const savedSets = localStorage.getItem('workout_sets_v7');
       exercises = savedEx ? JSON.parse(savedEx) : JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
       workoutData = savedSets ? JSON.parse(savedSets) : JSON.parse(JSON.stringify(DEFAULT_SETS));
       if (!exercises || Object.keys(exercises).length === 0) exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
@@ -669,8 +675,8 @@
 
     function save() {
       try {
-        localStorage.setItem('custom_exercises_v6', JSON.stringify(exercises));
-        localStorage.setItem('workout_sets_v6', JSON.stringify(workoutData));
+        localStorage.setItem('custom_exercises_v7', JSON.stringify(exercises));
+        localStorage.setItem('workout_sets_v7', JSON.stringify(workoutData));
       } catch (e) {}
     }
 
@@ -737,7 +743,7 @@
         exercises[currentExKey].step = step;
       } else {
         const newKey = 'ex_' + Date.now();
-        exercises[newKey] = { name, part, rest, step, defaultWeight: 10.0, defaultReps: 12 };
+        exercises[newKey] = { name, part, rest, step, defaultWeight: 10.0, defaultReps: 12, targetReps: 12 };
         workoutData[newKey] = [
           { id: 1, weight: 10.0, reps: 12, done: false },
           { id: 2, weight: 10.0, reps: 12, done: false },
@@ -905,22 +911,63 @@
       timerTarget = null;
     }
 
+    // 자체 연산 엔진: 점진적 과부하 분석 및 처방
     function finishWorkout() {
       let totalVol = 0;
       let totalCompletedSets = 0;
+      const partCounts = { '전면': 0, '측면': 0, '후면': 0, '기타': 0 };
+      const targetPrescriptions = [];
 
       Object.keys(workoutData).forEach(k => {
-        if (!exercises[k]) return;
-        workoutData[k].forEach(s => {
-          if (s.done) {
-            totalVol += (s.weight * s.reps);
-            totalCompletedSets++;
+        const ex = exercises[k];
+        if (!ex) return;
+        const doneSets = workoutData[k].filter(s => s.done);
+
+        if (doneSets.length > 0) {
+          totalCompletedSets += doneSets.length;
+          doneSets.forEach(s => totalVol += (s.weight * s.reps));
+
+          // 부위별 세트 분류
+          if (ex.part.includes('측면') && !ex.part.includes('복합')) partCounts['측면'] += doneSets.length;
+          else if (ex.part.includes('후면')) partCounts['후면'] += doneSets.length;
+          else if (ex.part.includes('전면') || ex.part.includes('복합')) partCounts['전면'] += doneSets.length;
+          else partCounts['기타'] += doneSets.length;
+
+          // 2중 진행법(Double Progression) 알고리즘
+          const topSet = doneSets[0];
+          const allHit = doneSets.every(s => s.reps >= (ex.targetReps || 10));
+
+          if (allHit) {
+            const nextWeight = (topSet.weight + ex.step).toFixed(1);
+            targetPrescriptions.push(`• ${ex.name}: 🚀 [증량 권장] 전 세트 목표치 달성! 다음엔 ${nextWeight}kg으로 시작하여 ${doneSets.length}세트 도전.`);
+          } else {
+            targetPrescriptions.push(`• ${ex.name}: ⚓ [중량 유지] 현재 ${topSet.weight}kg 유지. 모든 세트를 최소 ${ex.targetReps || 12}회 채우는 데 집중.`);
           }
-        });
+        }
       });
+
+      if (totalCompletedSets === 0) {
+        alert('완료(✓) 체크된 세트가 없습니다. 먼저 수행한 세트를 체크해 주세요.');
+        return;
+      }
 
       document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg`;
       document.getElementById('res-sets').innerText = `${totalCompletedSets} SETS`;
+
+      // 목표 처방 출력
+      document.getElementById('presc-targets').innerText = targetPrescriptions.join('\n\n');
+
+      // 밸런스 및 휴식 지침 생성
+      let balanceText = `수행 볼륨: 측면 ${partCounts['측면']}세트 | 후면 ${partCounts['후면']}세트 | 전면·프레스 ${partCounts['전면']}세트\n`;
+      if (partCounts['후면'] === 0) {
+        balanceText += `⚠️ [경고] 후면삼각근 운동이 빠졌습니다. 라운드 숄더 방지와 입체감을 위해 페이스 풀을 필수로 추가하세요.\n`;
+      }
+      if (partCounts['측면'] < 3) {
+        balanceText += `⚠️ [조언] 어깨 너비 확장을 위해 사레레 볼륨을 최소 4세트 이상 확보하세요.\n`;
+      }
+      balanceText += `💤 [휴식 시간] 어깨 근육 회복을 위해 최소 48시간(2일 뒤) 휴식 후 다음 세션을 진행하세요.`;
+
+      document.getElementById('presc-balance').innerText = balanceText;
       document.getElementById('result-modal').style.display = 'flex';
     }
 
@@ -929,7 +976,7 @@
     }
 
     function resetAllWorkout() {
-      if (!confirm('완료 체크를 모두 풀고 새 세션을 시작할까요?')) return;
+      if (!confirm('완료 체크를 모두 풀고 새 세션을 시작할까요? (설정한 중량은 유지됩니다)')) return;
       Object.keys(workoutData).forEach(k => {
         workoutData[k].forEach(s => s.done = false);
       });
@@ -938,118 +985,26 @@
       closeResultModal();
     }
 
-    function configureApiKey() {
-      const current = localStorage.getItem('gemini_api_key') || '';
-      const key = prompt('Gemini API 키를 입력하세요 (Google AI Studio에서 발급):', current);
-      if (key !== null) localStorage.setItem('gemini_api_key', key.trim());
-    }
-
-    // 503 과부하 방어 및 대체 모델 자동 우회 로직
-    async function requestAiAnalysis() {
-      const apiKey = (localStorage.getItem('gemini_api_key') || '').trim();
-      const box = document.getElementById('ai-result');
-      const reqBtn = document.getElementById('ai-req-btn');
-
-      if (!apiKey) {
-        alert('우측 상단 [API 키] 버튼을 눌러 Gemini API 키를 먼저 등록해주세요.');
-        box.innerText = '⚠️ API 키가 등록되지 않았습니다. 상단 [API 키] 버튼을 눌러 등록해주세요.';
-        return;
-      }
-
-      const summary = {};
-      let totalDoneSets = 0;
-
+    // 대안 2: Gemini 웹/앱 붙여넣기용 원클릭 프롬프트 복사
+    function copyWorkoutPrompt() {
+      const summary = [];
       Object.keys(workoutData).forEach(k => {
-        if (!exercises[k]) return;
+        const ex = exercises[k];
+        if (!ex) return;
         const done = workoutData[k].filter(s => s.done);
         if (done.length > 0) {
-          const label = `${exercises[k].name} (${exercises[k].part})`;
-          summary[label] = done.map(s => `${s.weight}kg x ${s.reps}회`);
-          totalDoneSets += done.length;
+          const setsStr = done.map((s, i) => `${i+1}세트: ${s.weight}kg x ${s.reps}회`).join(', ');
+          summary.push(`- ${ex.name} (${ex.part}): ${setsStr}`);
         }
       });
 
-      if (totalDoneSets === 0) {
-        box.innerText = '⚠️ 완료(✓) 체크된 세트가 없습니다.\n운동 세트 오른쪽의 체크(✓) 버튼을 눌러 세트를 완료한 뒤 검사를 요청해주세요.';
-        return;
-      }
+      const promptText = `보디빌딩 어깨 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하와 볼륨 밸런스 평가\n2. 다음 어깨 운동 날 각 종목별 구체적인 목표 중량(kg)과 반복 횟수 처방\n3. 권장 회복 시간`;
 
-      reqBtn.disabled = true;
-      reqBtn.innerText = 'AI 분석 및 처방 계산 중...';
-      box.innerText = '⏳ AI 코치가 오늘 운동 로그를 분석하고 다음 세션의 목표치와 루틴을 작성 중입니다...';
-
-      const promptText = `
-너는 비판적이고 엄격한 근비대 전문 보디빌딩 코치다.
-모호한 칭찬이나 빈말은 일체 배제하고, 사용자가 오늘 수행한 운동 로그를 바탕으로 아래 3가지 항목을 구체적인 수치(kg, 횟수, 세트수)로 명확히 작성하라.
-
-[오늘 수행된 운동 로그]
-${JSON.stringify(summary, null, 2)}
-
----
-[답변 양식]
-1. 오늘 운동 평가 & 과부하 점검:
-- 오늘 운동의 세트 수와 중량이 어깨 근비대에 충분했는지 냉정하게 지적
-- 전면/측면/후면 중 볼륨이 부족하거나 과도하게 치우친 부위 경고
-
-2. 다음 운동 날 처방 (핵심):
-- 다음 어깨 운동 날 반드시 해야 할 추천 종목 리스트
-- 각 종목별 구체적인 [목표 시작 중량(kg)], [목표 반복 횟수(회)], [추천 세트 수]를 숫자로 정확히 제시 (예: OHP 37.5kg 6회 3세트, 사레레 12.5kg 15회 4세트 등)
-- 오늘 기록과 비교해 중량을 올릴지, 횟수를 늘릴지 과부하 지침 제공
-
-3. 휴식 및 회복 시간:
-- 다음 어깨 세션까지 권장하는 회복 시간(시간 또는 며칠 뒤 추천)
-`;
-
-      // 503 에러 발생 시 순서대로 시도할 모델 후보 목록
-      const candidateModels = ['gemini-3.8-flash', 'gemini-3.1-pro', 'gemini-3.8-flash'];
-
-      for (let i = 0; i < candidateModels.length; i++) {
-        const currentModel = candidateModels[i];
-        try {
-          if (i > 0) {
-            box.innerText = `⏳ 서버 혼잡(503) 감지: 대체 경로(${currentModel})로 재시도 중입니다... (${i}/${candidateModels.length - 1})`;
-            await new Promise(resolve => setTimeout(resolve, 2000)); // 2초 대기 후 시도
-          }
-
-          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }]
-            })
-          });
-
-          const data = await res.json();
-
-          // 503(서버 혼잡)인 경우 다음 후보 모델로 넘어감
-          if (res.status === 503 && i < candidateModels.length - 1) {
-            continue;
-          }
-
-          if (!res.ok) {
-            const errDetail = data.error?.message || '알 수 없는 서버 오류';
-            box.innerText = `❌ API 호출 실패 (상태 코드: ${res.status})\n시도 모델: ${currentModel}\n오류 내용: ${errDetail}\n\n잠시 후 다시 시도해주세요.`;
-            return;
-          }
-
-          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (reply) {
-            box.innerText = reply;
-            return; // 성공 시 종료
-          } else {
-            box.innerText = '⚠️ 응답 텍스트를 불러오지 못했습니다. 반환된 데이터:\n' + JSON.stringify(data);
-            return;
-          }
-        } catch (err) {
-          if (i === candidateModels.length - 1) {
-            box.innerText = `❌ 통신/네트워크 에러:\n${err.message}\n\n스마트폰 인터넷 연결을 확인해주세요.`;
-          }
-        }
-      }
-
-      reqBtn.disabled = false;
-      reqBtn.innerText = '✦ AI 어깨 분석 & 다음 운동 처방';
+      navigator.clipboard.writeText(promptText).then(() => {
+        alert('운동 기록이 클립보드에 복사되었습니다!\nGemini 웹이나 앱 채팅창에 그대로 [붙여넣기]하세요.');
+      }).catch(() => {
+        prompt('아래 내용을 복사해 Gemini에 붙여넣으세요:', promptText);
+      });
     }
 
     renderPicker();
