@@ -2,7 +2,6 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <!-- 뷰포트 확대 축소 원천 차단 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>PRO IRON - 어깨 볼륨 & 타이머</title>
   <meta name="theme-color" content="#09090b">
@@ -24,15 +23,13 @@
       --danger: #f43f5e;
     }
     
-    /* 더블탭 줌 및 불필요한 확대 동작 방지 */
+    /* touch-action: manipulation 으로 버튼 딜레이 및 더블탭 확대 완전 차단 */
     * { 
       box-sizing: border-box; 
       margin: 0; 
       padding: 0; 
-      user-select: none; 
-      -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; /* 더블클릭 줌 딜레이 및 확대 차단 */
+      touch-action: manipulation; 
     }
 
     body {
@@ -42,6 +39,8 @@
       padding-bottom: 120px;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     /* 상단 헤더 */
@@ -71,8 +70,16 @@
       display: flex;
       gap: 8px;
     }
-    button { cursor: pointer; border: none; font-family: inherit; outline: none; transition: transform 0.1s ease; }
-    button:active { transform: scale(0.96); }
+    button { 
+      cursor: pointer; 
+      border: none; 
+      font-family: inherit; 
+      outline: none; 
+      transition: transform 0.08s ease, background-color 0.1s ease; 
+    }
+    button:active { 
+      transform: scale(0.95); 
+    }
 
     .btn-icon {
       background: #1e1e24;
@@ -185,7 +192,6 @@
       align-items: center;
       gap: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      transition: all 0.2s ease;
     }
     .set-card.is-done {
       background: #0f0f13;
@@ -251,7 +257,7 @@
       margin-top: -1px;
     }
 
-    /* 체크 및 액션 버튼 */
+    /* 완료 및 액션 버튼 */
     .btn-complete {
       width: 42px;
       height: 42px;
@@ -264,14 +270,12 @@
       justify-content: center;
       font-size: 16px;
       font-weight: 800;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .btn-complete.done {
       background: var(--accent);
       border-color: var(--accent);
       color: #000;
       box-shadow: 0 0 16px var(--accent-glow);
-      transform: scale(1.04);
     }
     .btn-del {
       background: transparent;
@@ -391,11 +395,6 @@
       box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.5);
       max-height: 90vh;
       overflow-y: auto;
-      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
     }
     .modal-grabber {
       width: 40px;
@@ -598,4 +597,416 @@
       </select>
 
       <div style="display:flex; gap:8px; margin-top:8px;">
-        <button style="flex:1; padding:14px;
+        <button style="flex:1; padding:14px; background:var(--primary); color:#000; border-radius:12px; font-weight:700;" onclick="saveExerciseModal()">저장 완료</button>
+        <button id="btn-delete-ex" style="padding:14px; background:rgba(244,63,94,0.15); color:var(--danger); border-radius:12px; font-weight:700;" onclick="deleteCurrentExercise()">삭제</button>
+      </div>
+      <button class="btn-sheet-close" onclick="closeExModal()">취소</button>
+    </div>
+  </div>
+
+  <!-- 결과 & AI 코칭 모달 -->
+  <div id="result-modal" class="modal-backdrop">
+    <div class="modal-sheet">
+      <div class="modal-grabber"></div>
+      <h2 class="modal-title">세션 리포트 & 코칭</h2>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <span class="stat-label">TOTAL VOLUME</span>
+          <div id="res-volume" class="stat-number">0 kg</div>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-label">COMPLETED SETS</span>
+          <div id="res-sets" class="stat-number">0 SETS</div>
+        </div>
+      </div>
+
+      <button id="ai-req-btn" class="btn-ai-cta" onclick="requestAiAnalysis()">
+        <span>✦</span> AI 어깨 볼륨 & 과부하 검사
+      </button>
+
+      <div id="ai-result" class="ai-feedback-view">버튼을 누르면 점진적 과부하와 전·측·후면 밸런스를 검사합니다.</div>
+
+      <button class="btn-sheet-close" onclick="closeResultModal()">닫기</button>
+      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 초기화</button>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_EXERCISES = {
+      ohp: { name: '오버헤드 프레스', part: '전면·측면 복합', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6 },
+      lateral: { name: '사이드 레터럴 레이즈', part: '측면삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15 },
+      facepull: { name: '페이스 풀', part: '후면삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12 }
+    };
+
+    const DEFAULT_SETS = {
+      ohp: [
+        { id: 1, weight: 35.0, reps: 6, done: false },
+        { id: 2, weight: 35.0, reps: 6, done: false },
+        { id: 3, weight: 35.0, reps: 5, done: false }
+      ],
+      lateral: [
+        { id: 1, weight: 12.0, reps: 15, done: false },
+        { id: 2, weight: 12.0, reps: 14, done: false },
+        { id: 3, weight: 12.0, reps: 12, done: false }
+      ],
+      facepull: [
+        { id: 1, weight: 20.0, reps: 15, done: false },
+        { id: 2, weight: 20.0, reps: 15, done: false },
+        { id: 3, weight: 20.0, reps: 12, done: false }
+      ]
+    };
+
+    let exercises = {};
+    let workoutData = {};
+    let currentExKey = 'lateral';
+    let modalMode = 'add';
+    let timerTarget = null;
+    let timerTotalSec = 60;
+    let timerInterval = null;
+
+    try {
+      const savedEx = localStorage.getItem('custom_exercises_v6');
+      const savedSets = localStorage.getItem('workout_sets_v6');
+      exercises = savedEx ? JSON.parse(savedEx) : JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+      workoutData = savedSets ? JSON.parse(savedSets) : JSON.parse(JSON.stringify(DEFAULT_SETS));
+      if (!exercises || Object.keys(exercises).length === 0) exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+    } catch (e) {
+      exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+      workoutData = JSON.parse(JSON.stringify(DEFAULT_SETS));
+    }
+
+    currentExKey = Object.keys(exercises)[0];
+
+    function save() {
+      try {
+        localStorage.setItem('custom_exercises_v6', JSON.stringify(exercises));
+        localStorage.setItem('workout_sets_v6', JSON.stringify(workoutData));
+      } catch (e) {}
+    }
+
+    function renderPicker() {
+      const picker = document.getElementById('exercise-picker');
+      picker.innerHTML = Object.keys(exercises).map(k => 
+        `<option value="${k}" ${k === currentExKey ? 'selected' : ''}>${exercises[k].name}</option>`
+      ).join('');
+      const ex = exercises[currentExKey];
+      document.getElementById('chip-part').innerText = ex.part;
+      document.getElementById('chip-rest').innerText = `휴식 ${ex.rest}s`;
+      document.getElementById('chip-step').innerText = `단위 ${ex.step}kg`;
+    }
+
+    function changeExercise(key) {
+      currentExKey = key;
+      renderPicker();
+      render();
+    }
+
+    function openExModal(mode) {
+      modalMode = mode;
+      const modal = document.getElementById('ex-modal');
+      const delBtn = document.getElementById('btn-delete-ex');
+
+      if (mode === 'edit') {
+        const ex = exercises[currentExKey];
+        document.getElementById('ex-modal-title').innerText = '운동 설정 수정';
+        document.getElementById('form-ex-name').value = ex.name;
+        document.getElementById('form-ex-part').value = ex.part;
+        document.getElementById('form-ex-rest').value = String(ex.rest);
+        document.getElementById('form-ex-step').value = String(ex.step);
+        delBtn.style.display = 'block';
+      } else {
+        document.getElementById('ex-modal-title').innerText = '새 운동 추가';
+        document.getElementById('form-ex-name').value = '';
+        document.getElementById('form-ex-part').value = '측면삼각근';
+        document.getElementById('form-ex-rest').value = '60';
+        document.getElementById('form-ex-step').value = '1';
+        delBtn.style.display = 'none';
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeExModal() {
+      document.getElementById('ex-modal').style.display = 'none';
+    }
+
+    function saveExerciseModal() {
+      const name = document.getElementById('form-ex-name').value.trim();
+      const part = document.getElementById('form-ex-part').value;
+      const rest = parseInt(document.getElementById('form-ex-rest').value, 10);
+      const step = parseFloat(document.getElementById('form-ex-step').value);
+
+      if (!name) {
+        alert('운동 이름을 입력하세요.');
+        return;
+      }
+
+      if (modalMode === 'edit') {
+        exercises[currentExKey].name = name;
+        exercises[currentExKey].part = part;
+        exercises[currentExKey].rest = rest;
+        exercises[currentExKey].step = step;
+      } else {
+        const newKey = 'ex_' + Date.now();
+        exercises[newKey] = { name, part, rest, step, defaultWeight: 10.0, defaultReps: 12 };
+        workoutData[newKey] = [
+          { id: 1, weight: 10.0, reps: 12, done: false },
+          { id: 2, weight: 10.0, reps: 12, done: false },
+          { id: 3, weight: 10.0, reps: 12, done: false }
+        ];
+        currentExKey = newKey;
+      }
+
+      save();
+      renderPicker();
+      render();
+      closeExModal();
+    }
+
+    function deleteCurrentExercise() {
+      const keys = Object.keys(exercises);
+      if (keys.length <= 1) {
+        alert('최소 1개 종목은 있어야 합니다.');
+        return;
+      }
+      if (!confirm(`'${exercises[currentExKey].name}' 종목을 삭제할까요?`)) return;
+
+      delete exercises[currentExKey];
+      delete workoutData[currentExKey];
+      currentExKey = Object.keys(exercises)[0];
+      save();
+      renderPicker();
+      render();
+      closeExModal();
+    }
+
+    function render() {
+      if (!workoutData[currentExKey]) workoutData[currentExKey] = [];
+      const sets = workoutData[currentExKey];
+      const ex = exercises[currentExKey];
+      const container = document.getElementById('set-list');
+
+      const completed = sets.filter(s => s.done).length;
+      document.getElementById('completed-count').innerText = `${completed} / ${sets.length} 완료`;
+
+      container.innerHTML = sets.map((s, idx) => `
+        <div class="set-card ${s.done ? 'is-done' : ''}">
+          <div class="set-tag">S${idx + 1}</div>
+
+          <div class="stepper-capsule">
+            <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', -${ex.step})">-</button>
+            <div class="stepper-val">
+              <span class="val-num">${Number(s.weight).toFixed(1)}</span>
+              <span class="val-unit">KG</span>
+            </div>
+            <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', ${ex.step})">+</button>
+          </div>
+
+          <div class="stepper-capsule">
+            <button class="stepper-btn" onclick="updateVal(${idx}, 'reps', -1)">-</button>
+            <div class="stepper-val">
+              <span class="val-num">${s.reps}</span>
+              <span class="val-unit">REPS</span>
+            </div>
+            <button class="stepper-btn" onclick="updateVal(${idx}, 'reps', 1)">+</button>
+          </div>
+
+          <button class="btn-complete ${s.done ? 'done' : ''}" onclick="toggleSet(${idx})">✓</button>
+          <button class="btn-del" onclick="deleteSet(${idx})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function updateVal(idx, key, delta) {
+      const sets = workoutData[currentExKey];
+      if (!sets || !sets[idx] || sets[idx].done) return;
+      if (key === 'weight') sets[idx].weight = Math.max(0, parseFloat((Number(sets[idx].weight) + delta).toFixed(1)));
+      if (key === 'reps') sets[idx].reps = Math.max(1, sets[idx].reps + delta);
+      save();
+      render();
+    }
+
+    function addSet() {
+      if (!workoutData[currentExKey]) workoutData[currentExKey] = [];
+      const sets = workoutData[currentExKey];
+      const ex = exercises[currentExKey];
+      const last = sets.length > 0 ? sets[sets.length - 1] : null;
+
+      sets.push({
+        id: Date.now(),
+        weight: last ? Number(last.weight) : (ex.defaultWeight || 10.0),
+        reps: last ? Number(last.reps) : (ex.defaultReps || 12),
+        done: false
+      });
+      save();
+      render();
+    }
+
+    function deleteSet(idx) {
+      const sets = workoutData[currentExKey];
+      if (!sets || sets.length <= 1) {
+        alert('최소 1개 세트는 유지되어야 합니다.');
+        return;
+      }
+      sets.splice(idx, 1);
+      save();
+      render();
+    }
+
+    function toggleSet(idx) {
+      const sets = workoutData[currentExKey];
+      if (!sets || !sets[idx]) return;
+      sets[idx].done = !sets[idx].done;
+      save();
+      render();
+      if (sets[idx].done) {
+        if ('vibrate' in navigator) navigator.vibrate(50);
+        startTimer(exercises[currentExKey].rest);
+      }
+    }
+
+    function playBeep() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    function startTimer(sec) {
+      timerTotalSec = sec;
+      timerTarget = Date.now() + sec * 1000;
+      document.getElementById('timer-island').style.display = 'block';
+      if (timerInterval) clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const remaining = Math.ceil((timerTarget - Date.now()) / 1000);
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('timer-island').style.display = 'none';
+          if ('vibrate' in navigator) navigator.vibrate([200, 100, 200, 100, 200]);
+          playBeep();
+        } else {
+          const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+          const s = String(remaining % 60).padStart(2, '0');
+          document.getElementById('timer-val').innerText = `${m}:${s}`;
+          
+          const progressPercent = ((timerTotalSec - remaining) / timerTotalSec) * 100;
+          document.getElementById('timer-progress').style.width = `${progressPercent}%`;
+        }
+      }, 250);
+    }
+
+    function addTime(sec) {
+      if (!timerTarget) return;
+      timerTarget += sec * 1000;
+      timerTotalSec += sec;
+    }
+
+    function skipTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      document.getElementById('timer-island').style.display = 'none';
+      timerTarget = null;
+    }
+
+    function finishWorkout() {
+      let totalVol = 0;
+      let totalCompletedSets = 0;
+
+      Object.keys(workoutData).forEach(k => {
+        if (!exercises[k]) return;
+        workoutData[k].forEach(s => {
+          if (s.done) {
+            totalVol += (s.weight * s.reps);
+            totalCompletedSets++;
+          }
+        });
+      });
+
+      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg`;
+      document.getElementById('res-sets').innerText = `${totalCompletedSets} SETS`;
+      document.getElementById('result-modal').style.display = 'flex';
+    }
+
+    function closeResultModal() {
+      document.getElementById('result-modal').style.display = 'none';
+    }
+
+    function resetAllWorkout() {
+      if (!confirm('완료 체크를 모두 풀고 새 세션을 시작할까요?')) return;
+      Object.keys(workoutData).forEach(k => {
+        workoutData[k].forEach(s => s.done = false);
+      });
+      save();
+      render();
+      closeResultModal();
+    }
+
+    function configureApiKey() {
+      const current = localStorage.getItem('gemini_api_key') || '';
+      const key = prompt('Gemini API 키를 입력하세요:', current);
+      if (key !== null) localStorage.setItem('gemini_api_key', key.trim());
+    }
+
+    async function requestAiAnalysis() {
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        alert('우측 상단 [API 키]를 눌러 먼저 Gemini API 키를 등록하세요.');
+        return;
+      }
+
+      const summary = {};
+      Object.keys(workoutData).forEach(k => {
+        if (!exercises[k]) return;
+        const done = workoutData[k].filter(s => s.done);
+        if (done.length > 0) {
+          const label = `${exercises[k].name} (${exercises[k].part})`;
+          summary[label] = done.map(s => `${s.weight}kg x ${s.reps}회`);
+        }
+      });
+
+      const box = document.getElementById('ai-result');
+      const reqBtn = document.getElementById('ai-req-btn');
+      reqBtn.disabled = true;
+      box.innerText = 'AI가 점진적 과부하와 어깨 밸런스를 분석 중입니다...';
+
+      const promptText = `
+너는 엄격한 근비대 전문 보디빌딩 코치다. 모호한 응원이나 미사여구는 배제하고 다음 3가지 지표를 분석하라:
+1. 어깨 3면 밸런스 점검: 수행된 종목들의 타깃 부위(전면/측면/후면 등)를 바탕으로 볼륨이 부족하거나 치우친 부위 경고
+2. 과부하 달성도 평가: 각 종목별 반복수/중량 조합의 적절성
+3. 다음 세션 핵심 처방: 다음 루틴에서 우선적으로 올려야 할 종목과 구체적인 중량/횟수 목표
+
+[오늘 수행된 운동 로그]
+${JSON.stringify(summary, null, 2)}
+`;
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }]
+          })
+        });
+        const data = await res.json();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        box.innerText = reply || '피드백 응답을 가져오지 못했습니다.';
+      } catch (err) {
+        box.innerText = '통신 에러 발생: ' + err.message;
+      } finally {
+        reqBtn.disabled = false;
+      }
+    }
+
+    renderPicker();
+    render();
+  </script>
+</body>
+</html>
