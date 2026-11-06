@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PRO IRON - 어깨 볼륨 & 타이머</title>
+  <title>PRO IRON - 맨몸 & 웨이트 운동 엔진</title>
   <meta name="theme-color" content="#09090b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -122,6 +122,7 @@
       display: flex;
       gap: 6px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
     .chip {
       font-size: 11px;
@@ -531,7 +532,6 @@
     </button>
   </main>
 
-  <!-- 플로팅 타이머 -->
   <aside id="timer-island">
     <div id="timer-progress" class="timer-progress"></div>
     <div class="timer-content">
@@ -553,32 +553,34 @@
       <h2 id="ex-modal-title" class="modal-title">운동 종목 설정</h2>
       
       <label class="form-label">운동 이름</label>
-      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 덤벨 숄더 프레스">
+      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 푸쉬업">
 
       <label class="form-label">타깃 부위</label>
       <select id="form-ex-part" class="select-field">
-        <option value="전면삼각근">전면삼각근</option>
-        <option value="측면삼각근">측면삼각근</option>
-        <option value="후면삼각근">후면삼각근</option>
-        <option value="전면·측면 복합">전면·측면 복합 (프레스류)</option>
-        <option value="기타 상체">기타 상체</option>
+        <option value="가슴 & 전면삼각근">가슴 & 전면삼각근 (푸쉬업류)</option>
+        <option value="가슴 & 삼두근">가슴 & 삼두근 (다이아몬드/딥스)</option>
+        <option value="광배근 & 상체 프레임">광배근 & 상체 프레임 (풀업/친업)</option>
+        <option value="어깨 삼각근">어깨 삼각근 (파이크 푸쉬업/사레레/OHP)</option>
+        <option value="하체 대퇴 & 둔근">하체 대퇴 & 둔근 (스쿼트)</option>
+        <option value="복직근 & 코어">복직근 & 코어 (크런치/레그레이즈)</option>
+        <option value="기타 전신">기타 전신</option>
       </select>
 
       <label class="form-label">세트 간 휴식 시간</label>
       <select id="form-ex-rest" class="select-field">
-        <option value="45">45초</option>
-        <option value="60">60초 (기본 고립)</option>
-        <option value="90">90초</option>
-        <option value="120">120초 (복합 고중량)</option>
-        <option value="180">180초 (스트렝스)</option>
+        <option value="30">30초 (짧은 맨몸 인터벌)</option>
+        <option value="45">45초 (기본 맨몸/코어)</option>
+        <option value="60">60초 (기본 고립/푸쉬업)</option>
+        <option value="90">90초 (철봉/복합 운동)</option>
+        <option value="120">120초 (고중량 웨이트)</option>
       </select>
 
       <label class="form-label">중량 조절 단위 (+/-)</label>
       <select id="form-ex-step" class="select-field">
-        <option value="0.5">0.5 kg (미세 증량)</option>
-        <option value="1">1.0 kg (케이블/덤벨)</option>
+        <option value="0.5">0.5 kg (미세 조절)</option>
+        <option value="1">1.0 kg (중량 조끼/덤벨)</option>
         <option value="2">2.0 kg</option>
-        <option value="2.5">2.5 kg (바벨 원판)</option>
+        <option value="2.5">2.5 kg (원판 단위)</option>
         <option value="5">5.0 kg</option>
       </select>
 
@@ -590,7 +592,7 @@
     </div>
   </div>
 
-  <!-- 결과 및 즉각 처방 모달 -->
+  <!-- 결과 및 즉시 처방 모달 -->
   <div id="result-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
@@ -607,14 +609,13 @@
         </div>
       </div>
 
-      <!-- 내장 알고리즘 분석 결과 -->
       <div class="prescription-card">
         <div class="prescription-title">🎯 다음 운동 세션 목표 처방</div>
         <div id="presc-targets" class="prescription-body"></div>
       </div>
 
       <div class="prescription-card" style="border-left-color: var(--primary);">
-        <div class="prescription-title" style="color: var(--primary);">⚖️ 부위 밸런스 & 휴식 지침</div>
+        <div class="prescription-title" style="color: var(--primary);">⚖️ 상체 밸런스 & 휴식 가이드</div>
         <div id="presc-balance" class="prescription-body"></div>
       </div>
 
@@ -629,12 +630,77 @@
 
   <script>
     const DEFAULT_EXERCISES = {
-      ohp: { name: '오버헤드 프레스', part: '전면·측면 복합', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6, targetReps: 6 },
-      lateral: { name: '사이드 레터럴 레이즈', part: '측면삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15, targetReps: 15 },
-      facepull: { name: '페이스 풀', part: '후면삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12, targetReps: 15 }
+      // 간단한 맨몸 운동 라인업
+      pushup: { name: '푸쉬업 (팔굽혀펴기)', part: '가슴 & 전면삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
+      knee_pushup: { name: '니 푸쉬업 (무릎 대고)', part: '가슴 기초 & 워밍업', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
+      diamond_pushup: { name: '다이아몬드 푸쉬업', part: '가슴 & 삼두근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
+      decline_pushup: { name: '디클라인 푸쉬업', part: '어깨 삼각근 & 윗가슴', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
+      squat: { name: '맨몸 스쿼트', part: '하체 대퇴 & 둔근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
+      crunch: { name: '크런치 (복근)', part: '복직근 & 코어', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
+
+      // 철봉 운동
+      pullup: { name: '풀업 (턱걸이)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
+      chinup: { name: '친업 (언더그립)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
+      dips: { name: '딥스 (평행봉)', part: '가슴 & 삼두근', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
+      hanging_legraise: { name: '행잉 레그레이즈', part: '복직근 & 코어', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
+
+      // 웨이트 운동
+      ohp: { name: '오버헤드 프레스', part: '어깨 삼각근', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6, targetReps: 8 },
+      lateral: { name: '사이드 레터럴 레이즈', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15, targetReps: 15 },
+      facepull: { name: '페이스 풀', part: '어깨 삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12, targetReps: 15 }
     };
 
     const DEFAULT_SETS = {
+      pushup: [
+        { id: 1, weight: 0.0, reps: 15, done: false },
+        { id: 2, weight: 0.0, reps: 15, done: false },
+        { id: 3, weight: 0.0, reps: 12, done: false }
+      ],
+      knee_pushup: [
+        { id: 1, weight: 0.0, reps: 15, done: false },
+        { id: 2, weight: 0.0, reps: 15, done: false },
+        { id: 3, weight: 0.0, reps: 15, done: false }
+      ],
+      diamond_pushup: [
+        { id: 1, weight: 0.0, reps: 10, done: false },
+        { id: 2, weight: 0.0, reps: 10, done: false },
+        { id: 3, weight: 0.0, reps: 8, done: false }
+      ],
+      decline_pushup: [
+        { id: 1, weight: 0.0, reps: 12, done: false },
+        { id: 2, weight: 0.0, reps: 12, done: false },
+        { id: 3, weight: 0.0, reps: 10, done: false }
+      ],
+      squat: [
+        { id: 1, weight: 0.0, reps: 20, done: false },
+        { id: 2, weight: 0.0, reps: 20, done: false },
+        { id: 3, weight: 0.0, reps: 20, done: false }
+      ],
+      crunch: [
+        { id: 1, weight: 0.0, reps: 20, done: false },
+        { id: 2, weight: 0.0, reps: 20, done: false },
+        { id: 3, weight: 0.0, reps: 15, done: false }
+      ],
+      pullup: [
+        { id: 1, weight: 0.0, reps: 8, done: false },
+        { id: 2, weight: 0.0, reps: 7, done: false },
+        { id: 3, weight: 0.0, reps: 6, done: false }
+      ],
+      chinup: [
+        { id: 1, weight: 0.0, reps: 8, done: false },
+        { id: 2, weight: 0.0, reps: 7, done: false },
+        { id: 3, weight: 0.0, reps: 6, done: false }
+      ],
+      dips: [
+        { id: 1, weight: 0.0, reps: 10, done: false },
+        { id: 2, weight: 0.0, reps: 10, done: false },
+        { id: 3, weight: 0.0, reps: 8, done: false }
+      ],
+      hanging_legraise: [
+        { id: 1, weight: 0.0, reps: 12, done: false },
+        { id: 2, weight: 0.0, reps: 12, done: false },
+        { id: 3, weight: 0.0, reps: 10, done: false }
+      ],
       ohp: [
         { id: 1, weight: 35.0, reps: 6, done: false },
         { id: 2, weight: 35.0, reps: 6, done: false },
@@ -654,15 +720,15 @@
 
     let exercises = {};
     let workoutData = {};
-    let currentExKey = 'lateral';
+    let currentExKey = 'pushup';
     let modalMode = 'add';
     let timerTarget = null;
     let timerTotalSec = 60;
     let timerInterval = null;
 
     try {
-      const savedEx = localStorage.getItem('custom_exercises_v7');
-      const savedSets = localStorage.getItem('workout_sets_v7');
+      const savedEx = localStorage.getItem('custom_exercises_v9');
+      const savedSets = localStorage.getItem('workout_sets_v9');
       exercises = savedEx ? JSON.parse(savedEx) : JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
       workoutData = savedSets ? JSON.parse(savedSets) : JSON.parse(JSON.stringify(DEFAULT_SETS));
       if (!exercises || Object.keys(exercises).length === 0) exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
@@ -675,8 +741,8 @@
 
     function save() {
       try {
-        localStorage.setItem('custom_exercises_v7', JSON.stringify(exercises));
-        localStorage.setItem('workout_sets_v7', JSON.stringify(workoutData));
+        localStorage.setItem('custom_exercises_v9', JSON.stringify(exercises));
+        localStorage.setItem('workout_sets_v9', JSON.stringify(workoutData));
       } catch (e) {}
     }
 
@@ -713,7 +779,7 @@
       } else {
         document.getElementById('ex-modal-title').innerText = '새 운동 추가';
         document.getElementById('form-ex-name').value = '';
-        document.getElementById('form-ex-part').value = '측면삼각근';
+        document.getElementById('form-ex-part').value = '가슴 & 전면삼각근';
         document.getElementById('form-ex-rest').value = '60';
         document.getElementById('form-ex-step').value = '1';
         delBtn.style.display = 'none';
@@ -743,11 +809,11 @@
         exercises[currentExKey].step = step;
       } else {
         const newKey = 'ex_' + Date.now();
-        exercises[newKey] = { name, part, rest, step, defaultWeight: 10.0, defaultReps: 12, targetReps: 12 };
+        exercises[newKey] = { name, part, rest, step, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 };
         workoutData[newKey] = [
-          { id: 1, weight: 10.0, reps: 12, done: false },
-          { id: 2, weight: 10.0, reps: 12, done: false },
-          { id: 3, weight: 10.0, reps: 12, done: false }
+          { id: 1, weight: 0.0, reps: 15, done: false },
+          { id: 2, weight: 0.0, reps: 15, done: false },
+          { id: 3, weight: 0.0, reps: 12, done: false }
         ];
         currentExKey = newKey;
       }
@@ -791,8 +857,8 @@
           <div class="stepper-capsule">
             <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', -${ex.step})">-</button>
             <div class="stepper-val">
-              <span class="val-num">${Number(s.weight).toFixed(1)}</span>
-              <span class="val-unit">KG</span>
+              <span class="val-num">${Number(s.weight) === 0 ? '맨몸' : Number(s.weight).toFixed(1)}</span>
+              <span class="val-unit">${Number(s.weight) === 0 ? 'BODY' : 'KG'}</span>
             </div>
             <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', ${ex.step})">+</button>
           </div>
@@ -829,8 +895,8 @@
 
       sets.push({
         id: Date.now(),
-        weight: last ? Number(last.weight) : (ex.defaultWeight || 10.0),
-        reps: last ? Number(last.reps) : (ex.defaultReps || 12),
+        weight: last ? Number(last.weight) : (ex.defaultWeight || 0.0),
+        reps: last ? Number(last.reps) : (ex.defaultReps || 15),
         done: false
       });
       save();
@@ -911,11 +977,11 @@
       timerTarget = null;
     }
 
-    // 자체 연산 엔진: 점진적 과부하 분석 및 처방
+    // 자체 연산 엔진 (맨몸 및 웨이트 통합 점진적 과부하 처방)
     function finishWorkout() {
       let totalVol = 0;
       let totalCompletedSets = 0;
-      const partCounts = { '전면': 0, '측면': 0, '후면': 0, '기타': 0 };
+      const partCounts = { '가슴·푸쉬업': 0, '등·철봉': 0, '어깨': 0, '하체': 0, '코어': 0 };
       const targetPrescriptions = [];
 
       Object.keys(workoutData).forEach(k => {
@@ -927,21 +993,30 @@
           totalCompletedSets += doneSets.length;
           doneSets.forEach(s => totalVol += (s.weight * s.reps));
 
-          // 부위별 세트 분류
-          if (ex.part.includes('측면') && !ex.part.includes('복합')) partCounts['측면'] += doneSets.length;
-          else if (ex.part.includes('후면')) partCounts['후면'] += doneSets.length;
-          else if (ex.part.includes('전면') || ex.part.includes('복합')) partCounts['전면'] += doneSets.length;
-          else partCounts['기타'] += doneSets.length;
+          // 부위별 집계
+          if (ex.part.includes('가슴')) partCounts['가슴·푸쉬업'] += doneSets.length;
+          else if (ex.part.includes('광배근')) partCounts['등·철봉'] += doneSets.length;
+          else if (ex.part.includes('어깨')) partCounts['어깨'] += doneSets.length;
+          else if (ex.part.includes('하체')) partCounts['하체'] += doneSets.length;
+          else if (ex.part.includes('코어') || ex.part.includes('복직근')) partCounts['코어'] += doneSets.length;
 
-          // 2중 진행법(Double Progression) 알고리즘
+          // 2중 진행법 적용
           const topSet = doneSets[0];
-          const allHit = doneSets.every(s => s.reps >= (ex.targetReps || 10));
+          const allHit = doneSets.every(s => s.reps >= (ex.targetReps || 15));
 
-          if (allHit) {
-            const nextWeight = (topSet.weight + ex.step).toFixed(1);
-            targetPrescriptions.push(`• ${ex.name}: 🚀 [증량 권장] 전 세트 목표치 달성! 다음엔 ${nextWeight}kg으로 시작하여 ${doneSets.length}세트 도전.`);
+          if (topSet.weight === 0) {
+            if (allHit) {
+              targetPrescriptions.push(`• ${ex.name}: 🚀 [목표 돌파] 전 세트 ${ex.targetReps}회 완수! 다음엔 중량 조끼 착용(+${ex.step}kg) 또는 더 어려운 변형 동작(다이아몬드/디클라인)으로 난이도를 올리세요.`);
+            } else {
+              targetPrescriptions.push(`• ${ex.name}: ⚓ [반복수 집중] 전 세트 목표치(${ex.targetReps}회)를 흐트러짐 없이 채울 수 있을 때까지 맨몸 반복수 누적에 집중.`);
+            }
           } else {
-            targetPrescriptions.push(`• ${ex.name}: ⚓ [중량 유지] 현재 ${topSet.weight}kg 유지. 모든 세트를 최소 ${ex.targetReps || 12}회 채우는 데 집중.`);
+            if (allHit) {
+              const nextWeight = (topSet.weight + ex.step).toFixed(1);
+              targetPrescriptions.push(`• ${ex.name}: 🚀 [중량 증량] 전 세트 목표치 달성! 다음엔 ${nextWeight}kg으로 ${doneSets.length}세트 진행.`);
+            } else {
+              targetPrescriptions.push(`• ${ex.name}: ⚓ [중량 유지] 현재 ${topSet.weight}kg 유지. 모든 세트를 최소 ${ex.targetReps || 10}회 채우는 데 집중.`);
+            }
           }
         }
       });
@@ -951,21 +1026,16 @@
         return;
       }
 
-      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg`;
+      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg (추가중량)`;
       document.getElementById('res-sets').innerText = `${totalCompletedSets} SETS`;
 
-      // 목표 처방 출력
       document.getElementById('presc-targets').innerText = targetPrescriptions.join('\n\n');
 
-      // 밸런스 및 휴식 지침 생성
-      let balanceText = `수행 볼륨: 측면 ${partCounts['측면']}세트 | 후면 ${partCounts['후면']}세트 | 전면·프레스 ${partCounts['전면']}세트\n`;
-      if (partCounts['후면'] === 0) {
-        balanceText += `⚠️ [경고] 후면삼각근 운동이 빠졌습니다. 라운드 숄더 방지와 입체감을 위해 페이스 풀을 필수로 추가하세요.\n`;
+      let balanceText = `수행 세트: 가슴·푸쉬업 ${partCounts['가슴·푸쉬업']}S | 등·철봉 ${partCounts['등·철봉']}S | 어깨 ${partCounts['어깨']}S | 하체 ${partCounts['하체']}S | 코어 ${partCounts['코어']}S\n`;
+      if (partCounts['가슴·푸쉬업'] >= 4 && partCounts['등·철봉'] === 0) {
+        balanceText += `💡 [균형 권장] 미는 푸쉬업 동작이 많습니다. 라운드 숄더 방지를 위해 당기는 풀업이나 밴드 로우를 짝지어 진행하세요.\n`;
       }
-      if (partCounts['측면'] < 3) {
-        balanceText += `⚠️ [조언] 어깨 너비 확장을 위해 사레레 볼륨을 최소 4세트 이상 확보하세요.\n`;
-      }
-      balanceText += `💤 [휴식 시간] 어깨 근육 회복을 위해 최소 48시간(2일 뒤) 휴식 후 다음 세션을 진행하세요.`;
+      balanceText += `💤 [휴식 시간] 가슴과 전면 어깨 근육 회복을 위해 최소 24~48시간 휴식을 권장합니다.`;
 
       document.getElementById('presc-balance').innerText = balanceText;
       document.getElementById('result-modal').style.display = 'flex';
@@ -976,7 +1046,7 @@
     }
 
     function resetAllWorkout() {
-      if (!confirm('완료 체크를 모두 풀고 새 세션을 시작할까요? (설정한 중량은 유지됩니다)')) return;
+      if (!confirm('완료 체크를 모두 풀고 새 세션을 시작할까요? (설정한 중량/횟수는 유지됩니다)')) return;
       Object.keys(workoutData).forEach(k => {
         workoutData[k].forEach(s => s.done = false);
       });
@@ -985,7 +1055,6 @@
       closeResultModal();
     }
 
-    // 대안 2: Gemini 웹/앱 붙여넣기용 원클릭 프롬프트 복사
     function copyWorkoutPrompt() {
       const summary = [];
       Object.keys(workoutData).forEach(k => {
@@ -993,15 +1062,15 @@
         if (!ex) return;
         const done = workoutData[k].filter(s => s.done);
         if (done.length > 0) {
-          const setsStr = done.map((s, i) => `${i+1}세트: ${s.weight}kg x ${s.reps}회`).join(', ');
+          const setsStr = done.map((s, i) => `${i+1}세트: ${s.weight === 0 ? '맨몸' : s.weight + 'kg'} x ${s.reps}회`).join(', ');
           summary.push(`- ${ex.name} (${ex.part}): ${setsStr}`);
         }
       });
 
-      const promptText = `보디빌딩 어깨 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하와 볼륨 밸런스 평가\n2. 다음 어깨 운동 날 각 종목별 구체적인 목표 중량(kg)과 반복 횟수 처방\n3. 권장 회복 시간`;
+      const promptText = `맨몸운동 및 상체 웨이트 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하와 부위별 볼륨 밸런스 평가\n2. 다음 운동 세션 각 종목별 구체적인 목표 횟수 및 난이도 처방\n3. 권장 회복 시간`;
 
       navigator.clipboard.writeText(promptText).then(() => {
-        alert('운동 기록이 클립보드에 복사되었습니다!\nGemini 웹이나 앱 채팅창에 그대로 [붙여넣기]하세요.');
+        alert('운동 기록이 복사되었습니다!\nGemini 웹이나 앱 채팅창에 그대로 [붙여넣기]하세요.');
       }).catch(() => {
         prompt('아래 내용을 복사해 Gemini에 붙여넣으세요:', promptText);
       });
