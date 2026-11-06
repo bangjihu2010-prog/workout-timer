@@ -15,13 +15,14 @@
   <style>
     :root {
       --bg: #09090b;
-      --card-bg: #141418;
-      --card-border: #27272a;
+      --card-bg: #16161b;
+      --card-border: #2a2a32;
       --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.22);
+      --accent-glow: rgba(16, 185, 129, 0.25);
       --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.15);
       --text-main: #f4f4f5;
-      --text-sub: #71717a;
+      --text-sub: #8e8e99;
       --danger: #f43f5e;
       --warning: #f59e0b;
     }
@@ -58,31 +59,31 @@
 
     /* 상단 헤더 */
     header {
-      padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 16px 20px;
-      background: rgba(9, 9, 11, 0.88);
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 14px 16px;
+      background: rgba(12, 12, 15, 0.92);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       position: sticky;
       top: 0;
       z-index: 20;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
     .brand-title {
       font-size: 13px;
       font-weight: 800;
-      letter-spacing: 1.4px;
-      color: var(--text-sub);
+      letter-spacing: 1.2px;
+      color: var(--text-main);
       text-transform: uppercase;
     }
     .wake-dot {
@@ -98,33 +99,35 @@
     }
     .header-actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
     .btn-util {
-      background: #18181b;
-      color: #a1a1aa;
+      background: #1f1f26;
+      color: #d4d4d8;
       padding: 7px 11px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid #27272a;
-    }
-    .btn-finish-workout {
-      background: rgba(244, 63, 94, 0.15);
-      color: var(--danger);
-      padding: 7px 14px;
-      border-radius: 8px;
+      border-radius: 9px;
       font-size: 12px;
       font-weight: 700;
-      border: 1px solid rgba(244, 63, 94, 0.3);
+      border: 1px solid #32323d;
+      white-space: nowrap;
+    }
+    .btn-finish-workout {
+      background: rgba(244, 63, 94, 0.16);
+      color: #fb7185;
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      white-space: nowrap;
     }
 
     /* 종목 선택 바 */
     .exercise-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
     .select-wrapper {
       position: relative;
@@ -132,13 +135,13 @@
     }
     .exercise-select {
       width: 100%;
-      background: #18181b;
+      background: #181820;
       color: #fff;
-      border: 1px solid #2e2e38;
-      padding: 11px 32px 11px 14px;
-      border-radius: 10px;
+      border: 1px solid #32323f;
+      padding: 10px 32px 10px 13px;
+      border-radius: 11px;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
       appearance: none;
       outline: none;
     }
@@ -152,40 +155,40 @@
       pointer-events: none;
     }
     .btn-manage {
-      background: #18181b;
+      background: #181820;
       color: var(--primary);
-      padding: 11px 12px;
-      border-radius: 10px;
+      padding: 10px 12px;
+      border-radius: 11px;
       font-size: 13px;
-      font-weight: 600;
-      border: 1px solid #2e2e38;
+      font-weight: 700;
+      border: 1px solid #32323f;
       white-space: nowrap;
     }
 
     .meta-chips {
       display: flex;
-      gap: 6px;
-      margin-top: 10px;
+      gap: 5px;
+      margin-top: 8px;
       flex-wrap: wrap;
     }
     .chip {
       font-size: 11px;
       padding: 4px 8px;
-      border-radius: 6px;
-      background: #18181b;
+      border-radius: 7px;
+      background: #1a1a22;
       color: #a1a1aa;
       font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .chip-accent {
       color: var(--primary);
-      background: rgba(56, 189, 248, 0.08);
-      border-color: rgba(56, 189, 248, 0.2);
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.25);
     }
 
-    /* 세트 리스트 */
+    /* 본문 */
     .content {
-      padding: 16px 20px;
+      padding: 14px 16px;
     }
     .section-header {
       display: flex;
@@ -201,57 +204,70 @@
       letter-spacing: 0.5px;
     }
 
+    /* 개편된 세트 카드 */
     .set-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 12px 14px;
+      border-radius: 15px;
+      padding: 10px 12px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
-      transition: opacity 0.15s ease, border-color 0.15s ease;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      transition: all 0.15s ease;
     }
     .set-card.is-done {
-      background: #0f0f13;
-      border-color: rgba(16, 185, 129, 0.25);
-      opacity: 0.55;
+      background: #101014;
+      border-color: rgba(16, 185, 129, 0.3);
+      opacity: 0.6;
     }
 
-    .set-tag {
-      font-size: 13px;
+    /* 세트 태그 강조 */
+    .set-tag-badge {
+      min-width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: #21212a;
+      color: #e4e4e7;
+      font-size: 12px;
       font-weight: 800;
-      color: #52525b;
-      min-width: 24px;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #333340;
     }
-    .set-card.is-done .set-tag {
+    .set-card.is-done .set-tag-badge {
+      background: rgba(16, 185, 129, 0.15);
       color: var(--accent);
+      border-color: rgba(16, 185, 129, 0.4);
     }
 
+    /* 또렷해진 스테퍼 캡슐 */
     .stepper-capsule {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #0d0d10;
-      border: 1px solid #222228;
-      border-radius: 10px;
-      padding: 4px;
+      background: #0f0f14;
+      border: 1px solid #2a2a35;
+      border-radius: 11px;
+      padding: 3px;
     }
     .stepper-btn {
       width: 32px;
-      height: 34px;
+      height: 36px;
       border-radius: 8px;
-      background: #1c1c22;
-      color: #e4e4e7;
-      font-size: 16px;
+      background: #202029;
+      color: #fff;
+      font-size: 17px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .stepper-btn:active {
       background: var(--primary);
@@ -264,53 +280,55 @@
       align-items: center;
       justify-content: center;
       min-width: 44px;
-      padding: 2px 4px;
-      border-radius: 6px;
+      padding: 2px 0;
       cursor: pointer;
     }
     .stepper-val:active {
       background: rgba(56, 189, 248, 0.12);
+      border-radius: 6px;
     }
     .val-num {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 800;
       color: #fff;
       font-variant-numeric: tabular-nums;
-      border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+      line-height: 1.1;
     }
     .val-unit {
       font-size: 9px;
       color: var(--text-sub);
       text-transform: uppercase;
-      font-weight: 600;
-      margin-top: 1px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
     }
 
+    /* 시인성이 개선된 완료 체크 버튼 */
     .btn-complete {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
-      background: #1c1c22;
-      border: 1px solid #2e2e38;
-      color: transparent;
+      background: #1b1b22;
+      border: 2px solid #363645;
+      color: #71717a;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 18px;
+      font-weight: 900;
       flex-shrink: 0;
     }
     .btn-complete.done {
       background: var(--accent);
       border-color: var(--accent);
       color: #000;
-      box-shadow: 0 0 16px var(--accent-glow);
+      box-shadow: 0 0 14px var(--accent-glow);
     }
     .btn-del {
       background: transparent;
-      color: #52525b;
+      color: #555562;
       font-size: 15px;
-      padding: 6px;
+      padding: 6px 4px;
       border-radius: 6px;
       flex-shrink: 0;
     }
@@ -318,12 +336,13 @@
       color: var(--danger);
     }
 
+    /* 복제 추가 버튼 */
     .btn-add-set {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: 12px;
-      background: rgba(56, 189, 248, 0.06);
-      border: 1px dashed rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.07);
+      border: 1px dashed rgba(56, 189, 248, 0.35);
       color: var(--primary);
       font-size: 14px;
       font-weight: 700;
@@ -331,23 +350,23 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     /* 플로팅 타이머 */
     #timer-island {
       display: none;
       position: fixed;
-      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-      left: 16px;
-      right: 16px;
-      background: rgba(24, 24, 27, 0.96);
+      bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+      left: 14px;
+      right: 14px;
+      background: rgba(22, 22, 28, 0.96);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.15);
       border-radius: 18px;
-      padding: 14px 16px;
+      padding: 12px 16px;
       z-index: 100;
       overflow: hidden;
     }
@@ -356,7 +375,7 @@
       top: 0;
       left: 0;
       bottom: 0;
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(16, 185, 129, 0.12);
       z-index: 0;
       transition: width 0.2s linear;
     }
@@ -374,7 +393,7 @@
     .timer-tag {
       font-size: 10px;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1px;
       color: var(--accent);
     }
@@ -391,15 +410,16 @@
       gap: 6px;
     }
     .timer-action {
-      background: #27272a;
+      background: #2b2b36;
       color: #fff;
       padding: 8px 11px;
       border-radius: 10px;
       font-size: 12px;
       font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .timer-action-skip {
-      background: #3f3f46;
+      background: #3a3a48;
       color: #e4e4e7;
     }
 
@@ -408,7 +428,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       z-index: 200;
@@ -417,20 +437,20 @@
     }
     .modal-sheet {
       width: 100%;
-      background: #141418;
+      background: #15151c;
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
-      border: 1px solid #27272a;
+      border: 1px solid #2a2a38;
       border-bottom: none;
-      padding: 20px 20px calc(32px + env(safe-area-inset-bottom, 0px)) 20px;
-      box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.5);
+      padding: 20px 20px calc(30px + env(safe-area-inset-bottom, 0px)) 20px;
+      box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.6);
       max-height: 90vh;
       overflow-y: auto;
     }
     .modal-grabber {
       width: 40px;
       height: 4px;
-      background: #3f3f46;
+      background: #3f3f4e;
       border-radius: 2px;
       margin: 0 auto 16px auto;
     }
@@ -454,8 +474,8 @@
     }
     .input-field, .select-field, .textarea-field {
       width: 100%;
-      background: #0d0d10;
-      border: 1px solid #27272a;
+      background: #0d0d12;
+      border: 1px solid #2c2c3a;
       padding: 12px 14px;
       border-radius: 12px;
       color: #fff;
@@ -471,7 +491,7 @@
 
     .direct-input-display {
       width: 100%;
-      background: #09090b;
+      background: #09090d;
       border: 2px solid var(--primary);
       border-radius: 14px;
       padding: 14px;
@@ -489,8 +509,8 @@
       margin-bottom: 16px;
     }
     .btn-preset {
-      background: #1e1e24;
-      border: 1px solid #2e2e38;
+      background: #20202a;
+      border: 1px solid #30303e;
       color: #e4e4e7;
       padding: 10px 6px;
       border-radius: 10px;
@@ -509,8 +529,8 @@
       margin-bottom: 16px;
     }
     .stat-tile {
-      background: #0d0d10;
-      border: 1px solid #222228;
+      background: #0d0d12;
+      border: 1px solid #242430;
       padding: 12px 10px;
       border-radius: 14px;
       text-align: center;
@@ -530,10 +550,10 @@
     }
 
     .prescription-card {
-      background: #0d0d10;
-      border: 1px solid #222228;
+      background: #0d0d12;
+      border: 1px solid #242430;
       border-radius: 14px;
-      padding: 16px;
+      padding: 15px;
       margin-bottom: 12px;
       border-left: 4px solid var(--accent);
     }
@@ -542,7 +562,6 @@
       font-weight: 800;
       color: var(--accent);
       margin-bottom: 8px;
-      letter-spacing: 0.5px;
     }
     .prescription-body {
       font-size: 13px;
@@ -569,8 +588,8 @@
       flex: 1;
       padding: 14px;
       border-radius: 12px;
-      background: #27272a;
-      border: 1px solid #3f3f46;
+      background: #262633;
+      border: 1px solid #3c3c4e;
       color: #fff;
       font-size: 13px;
       font-weight: 700;
@@ -582,7 +601,7 @@
     .btn-sheet-close {
       width: 100%;
       padding: 12px;
-      background: #1e1e24;
+      background: #1f1f28;
       border-radius: 12px;
       color: #a1a1aa;
       font-size: 13px;
@@ -606,7 +625,7 @@
     <div class="header-top">
       <div class="brand-group">
         <span id="wake-indicator" class="wake-dot" title="화면 켜짐 유지 상태"></span>
-        <span class="brand-title">Pro Iron Science</span>
+        <span class="brand-title">Pro Iron</span>
       </div>
       <div class="header-actions">
         <button class="btn-util" onclick="openBackupModal()">백업/복원</button>
@@ -682,9 +701,9 @@
       <h2 id="ex-modal-title" class="modal-title">운동 종목 설정</h2>
 
       <label class="form-label">운동 이름</label>
-      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 중량 풀업">
+      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 풀업 (턱걸이)">
 
-      <label class="form-label">타깃 부위 (스포츠 과학 밸런스 분석용)</label>
+      <label class="form-label">타깃 부위</label>
       <select id="form-ex-part" class="select-field">
         <option value="가슴 & 전면삼각근">가슴 & 전면삼각근 (푸쉬업류)</option>
         <option value="가슴 & 삼두근">가슴 & 삼두근 (다이아몬드/딥스)</option>
@@ -698,7 +717,7 @@
       <div class="form-row-2">
         <div>
           <label class="form-label">과부하 목표 횟수 (회)</label>
-          <input type="number" id="form-ex-target" class="input-field" inputmode="numeric" placeholder="예: 12">
+          <input type="number" id="form-ex-target" class="input-field" inputmode="numeric" placeholder="예: 3 또는 10">
         </div>
         <div>
           <label class="form-label">중량 증감 단위 (+/-)</label>
@@ -712,14 +731,14 @@
         </div>
       </div>
 
-      <label class="form-label">세트 간 기본 휴식 시간 (다관절 90~120s / 고립 60s)</label>
+      <label class="form-label">세트 간 휴식 시간</label>
       <select id="form-ex-rest" class="select-field">
-        <option value="30">30초 (짧은 맨몸 인터벌)</option>
-        <option value="45">45초 (기본 코어)</option>
-        <option value="60">60초 (단일관절 고립/푸쉬업)</option>
-        <option value="90">90초 (철봉/복합 운동 최적)</option>
-        <option value="120">120초 (고중량 다관절 스트렝스)</option>
-        <option value="180">180초 (최대 근력)</option>
+        <option value="30">30초 (인터벌)</option>
+        <option value="45">45초 (코어/가벼운 세트)</option>
+        <option value="60">60초 (푸쉬업/고립)</option>
+        <option value="90">90초 (풀업/복합 다관절)</option>
+        <option value="120">120초 (고중량 웨이트)</option>
+        <option value="180">180초 (최대 스트렝스)</option>
       </select>
 
       <div class="action-btn-row">
@@ -736,7 +755,7 @@
       <div class="modal-grabber"></div>
       <h2 class="modal-title">데이터 백업 및 복원 (JSON)</h2>
       <label class="form-label">현재 운동 설정 및 세트 기록 데이터</label>
-      <textarea id="backup-json-area" class="textarea-field" rows="5" placeholder="백업 코드를 붙여넣거나 파일로 내보내기/불러오기를 실행하세요."></textarea>
+      <textarea id="backup-json-area" class="textarea-field" rows="5" placeholder="백업 코드를 붙여넣거나 파일 저장을 실행하세요."></textarea>
 
       <div class="action-btn-row">
         <button class="btn-copy-prompt" onclick="downloadBackupFile()">💾 파일로 저장</button>
@@ -744,7 +763,7 @@
       </div>
       <div class="action-btn-row">
         <button class="btn-primary-full" onclick="restoreFromText()">🔄 위 텍스트로 데이터 복원</button>
-        <label style="flex:1; padding:14px; border-radius:12px; background:#27272a; border:1px solid #3f3f46; color:#fff; font-size:13px; font-weight:700; text-align:center; cursor:pointer;">
+        <label style="flex:1; padding:14px; border-radius:12px; background:#262633; border:1px solid #3c3c4e; color:#fff; font-size:13px; font-weight:700; text-align:center; cursor:pointer;">
           📂 파일 불러오기
           <input type="file" accept=".json,application/json" style="display:none;" onchange="uploadBackupFile(event)">
         </label>
@@ -753,11 +772,11 @@
     </div>
   </div>
 
-  <!-- 결과 및 스포츠 과학 처방 모달 -->
+  <!-- 결과 및 과학적 처방 모달 -->
   <div id="result-modal" class="modal-backdrop" onclick="if(event.target===this) closeResultModal()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
-      <h2 class="modal-title">스포츠 과학 기반 세션 분석 리포트</h2>
+      <h2 class="modal-title">세션 분석 & 점진적 과부하 리포트</h2>
 
       <div class="stat-grid-3">
         <div class="stat-tile">
@@ -775,66 +794,63 @@
       </div>
 
       <div class="prescription-card">
-        <div class="prescription-title">🎯 점진적 과부하 달성도 (Double Progression)</div>
+        <div class="prescription-title">🎯 다음 세션 목표 처방 (Double Progression)</div>
         <div id="presc-targets" class="prescription-body"></div>
       </div>
 
       <div class="prescription-card" style="border-left-color: var(--primary);">
-        <div class="prescription-title" style="color: var(--primary);">⚖️ 유효 볼륨 판정 & 구조 밸런스 (Sports Science)</div>
+        <div class="prescription-title" style="color: var(--primary);">⚖️ 볼륨 밸런스 & 회복 지침 (MED 원칙)</div>
         <div id="presc-balance" class="prescription-body"></div>
       </div>
 
       <div class="action-btn-row">
-        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 논문 분석용 상세 프롬프트 복사</button>
+        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 AI 분석용 상세 기록 복사</button>
       </div>
 
       <button class="btn-sheet-close" onclick="closeResultModal()">닫기</button>
-      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 초기화 (새 운동 시작)</button>
+      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 초기화</button>
     </div>
   </div>
 
   <script>
-    /* =========================================
-       1. 프리셋 데이터 & 무결성 보정
-       ========================================= */
     const DEFAULT_EXERCISES = {
-      pushup: { name: '푸쉬업 (팔굽혀펴기)', part: '가슴 & 전면삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
-      knee_pushup: { name: '니 푸쉬업 (무릎 대고)', part: '가슴 & 전면삼각근', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
-      diamond_pushup: { name: '다이아몬드 푸쉬업', part: '가슴 & 삼두근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
-      decline_pushup: { name: '디클라인 푸쉬업', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
-      squat: { name: '맨몸 스쿼트', part: '하체 대퇴 & 둔근', rest: 60, step: 1.0, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
-      crunch: { name: '크런치 (복근)', part: '복직근 & 코어', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
-      pullup: { name: '풀업 (턱걸이)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
-      chinup: { name: '친업 (언더그립)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
-      dips: { name: '딥스 (평행봉)', part: '가슴 & 삼두근', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
-      hanging_legraise: { name: '행잉 레그레이즈', part: '복직근 & 코어', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
+      pullup: { name: '풀업 (턱걸이)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 3, targetReps: 3 },
+      pushup: { name: '푸쉬업 (팔굽혀펴기)', part: '가슴 & 전면삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 10, targetReps: 10 },
+      chinup: { name: '친업 (언더그립)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 3, targetReps: 3 },
+      knee_pushup: { name: '니 푸쉬업 (무릎 대고)', part: '가슴 & 전면삼각근', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 12 },
+      diamond_pushup: { name: '다이아몬드 푸쉬업', part: '가슴 & 삼두근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 8, targetReps: 8 },
+      decline_pushup: { name: '디클라인 푸쉬업', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 8, targetReps: 8 },
+      squat: { name: '맨몸 스쿼트', part: '하체 대퇴 & 둔근', rest: 60, step: 1.0, defaultWeight: 0.0, defaultReps: 15, targetReps: 15 },
+      crunch: { name: '크런치 (복근)', part: '복직근 & 코어', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 15 },
+      dips: { name: '딥스 (평행봉)', part: '가슴 & 삼두근', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 6, targetReps: 8 },
+      hanging_legraise: { name: '행잉 레그레이즈', part: '복직근 & 코어', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
       ohp: { name: '오버헤드 프레스', part: '어깨 삼각근', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6, targetReps: 8 },
-      lateral: { name: '사이드 레터럴 레이즈', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15, targetReps: 15 },
+      lateral: { name: '사이드 레터럴 레이즈', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 12, targetReps: 15 },
       facepull: { name: '페이스 풀', part: '어깨 삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12, targetReps: 15 }
     };
 
     const DEFAULT_SETS = {
-      pushup: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }, { id: 3, weight: 0.0, reps: 12, done: false }],
-      knee_pushup: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }, { id: 3, weight: 0.0, reps: 15, done: false }],
-      diamond_pushup: [{ id: 1, weight: 0.0, reps: 10, done: false }, { id: 2, weight: 0.0, reps: 10, done: false }, { id: 3, weight: 0.0, reps: 8, done: false }],
-      decline_pushup: [{ id: 1, weight: 0.0, reps: 12, done: false }, { id: 2, weight: 0.0, reps: 12, done: false }, { id: 3, weight: 0.0, reps: 10, done: false }],
-      squat: [{ id: 1, weight: 0.0, reps: 20, done: false }, { id: 2, weight: 0.0, reps: 20, done: false }, { id: 3, weight: 0.0, reps: 20, done: false }],
-      crunch: [{ id: 1, weight: 0.0, reps: 20, done: false }, { id: 2, weight: 0.0, reps: 20, done: false }, { id: 3, weight: 0.0, reps: 15, done: false }],
-      pullup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 7, done: false }, { id: 3, weight: 0.0, reps: 6, done: false }],
-      chinup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 7, done: false }, { id: 3, weight: 0.0, reps: 6, done: false }],
-      dips: [{ id: 1, weight: 0.0, reps: 10, done: false }, { id: 2, weight: 0.0, reps: 10, done: false }, { id: 3, weight: 0.0, reps: 8, done: false }],
-      hanging_legraise: [{ id: 1, weight: 0.0, reps: 12, done: false }, { id: 2, weight: 0.0, reps: 12, done: false }, { id: 3, weight: 0.0, reps: 10, done: false }],
-      ohp: [{ id: 1, weight: 35.0, reps: 6, done: false }, { id: 2, weight: 35.0, reps: 6, done: false }, { id: 3, weight: 35.0, reps: 5, done: false }],
-      lateral: [{ id: 1, weight: 12.0, reps: 15, done: false }, { id: 2, weight: 12.0, reps: 14, done: false }, { id: 3, weight: 12.0, reps: 12, done: false }],
-      facepull: [{ id: 1, weight: 20.0, reps: 15, done: false }, { id: 2, weight: 20.0, reps: 15, done: false }, { id: 3, weight: 20.0, reps: 12, done: false }]
+      pullup: [{ id: 1, weight: 0.0, reps: 3, done: false }, { id: 2, weight: 0.0, reps: 3, done: false }],
+      pushup: [{ id: 1, weight: 0.0, reps: 10, done: false }, { id: 2, weight: 0.0, reps: 10, done: false }],
+      chinup: [{ id: 1, weight: 0.0, reps: 3, done: false }, { id: 2, weight: 0.0, reps: 3, done: false }],
+      knee_pushup: [{ id: 1, weight: 0.0, reps: 12, done: false }, { id: 2, weight: 0.0, reps: 12, done: false }],
+      diamond_pushup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 8, done: false }],
+      decline_pushup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 8, done: false }],
+      squat: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }],
+      crunch: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }],
+      dips: [{ id: 1, weight: 0.0, reps: 6, done: false }, { id: 2, weight: 0.0, reps: 6, done: false }],
+      hanging_legraise: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 8, done: false }],
+      ohp: [{ id: 1, weight: 35.0, reps: 6, done: false }, { id: 2, weight: 35.0, reps: 6, done: false }],
+      lateral: [{ id: 1, weight: 12.0, reps: 12, done: false }, { id: 2, weight: 12.0, reps: 12, done: false }],
+      facepull: [{ id: 1, weight: 20.0, reps: 12, done: false }, { id: 2, weight: 20.0, reps: 12, done: false }]
     };
 
-    const STORAGE_EX_KEY = 'custom_exercises_v10';
-    const STORAGE_SETS_KEY = 'workout_sets_v10';
+    const STORAGE_EX_KEY = 'custom_exercises_v11';
+    const STORAGE_SETS_KEY = 'workout_sets_v11';
 
     let exercises = {};
     let workoutData = {};
-    let currentExKey = 'pushup';
+    let currentExKey = 'pullup';
     let modalMode = 'add';
     let directEditTarget = { idx: null, key: null };
 
@@ -853,9 +869,9 @@
           exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
         }
         Object.keys(exercises).forEach(k => {
-          if (!exercises[k].targetReps) exercises[k].targetReps = exercises[k].defaultReps || 12;
+          if (!exercises[k].targetReps) exercises[k].targetReps = exercises[k].defaultReps || 10;
           if (!Array.isArray(workoutData[k]) || workoutData[k].length === 0) {
-            workoutData[k] = [{ id: Date.now(), weight: exercises[k].defaultWeight || 0, reps: exercises[k].defaultReps || 12, done: false }];
+            workoutData[k] = [{ id: Date.now(), weight: exercises[k].defaultWeight || 0, reps: exercises[k].defaultReps || 10, done: false }];
           }
         });
       } catch (e) {
@@ -872,9 +888,7 @@
       } catch (e) {}
     }
 
-    /* =========================================
-       2. 오디오 언락 & Screen Wake Lock
-       ========================================= */
+    /* 오디오 & Wake Lock */
     let sharedAudioCtx = null;
     let audioUnlocked = false;
 
@@ -947,9 +961,7 @@
       }
     });
 
-    /* =========================================
-       3. UI 렌더링 & 세트 조작
-       ========================================= */
+    /* UI 렌더링 */
     function renderPicker() {
       const picker = document.getElementById('exercise-picker');
       picker.innerHTML = Object.keys(exercises).map(k =>
@@ -957,7 +969,7 @@
       ).join('');
       const ex = exercises[currentExKey];
       document.getElementById('chip-part').innerText = ex.part;
-      document.getElementById('chip-target').innerText = `목표 ${ex.targetReps || 12}회`;
+      document.getElementById('chip-target').innerText = `목표 ${ex.targetReps || 10}회`;
       document.getElementById('chip-rest').innerText = `휴식 ${ex.rest}s`;
       document.getElementById('chip-step').innerText = `단위 ${ex.step}kg`;
     }
@@ -979,7 +991,7 @@
 
       container.innerHTML = sets.map((s, idx) => `
         <div class="set-card ${s.done ? 'is-done' : ''}">
-          <div class="set-tag">S${idx + 1}</div>
+          <div class="set-tag-badge">S${idx + 1}</div>
 
           <div class="stepper-capsule">
             <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', -${ex.step})">-</button>
@@ -1027,7 +1039,7 @@
       sets.push({
         id: Date.now(),
         weight: last ? Number(last.weight) : (ex.defaultWeight || 0.0),
-        reps: last ? Number(last.reps) : (ex.defaultReps || 15),
+        reps: last ? Number(last.reps) : (ex.defaultReps || 10),
         done: false
       });
       if ('vibrate' in navigator) navigator.vibrate(25);
@@ -1058,9 +1070,7 @@
       }
     }
 
-    /* =========================================
-       4. 직접 입력 (Direct Input) 모달
-       ========================================= */
+    /* 직접 입력 모달 */
     function openDirectInput(idx, key) {
       directEditTarget = { idx, key };
       const setItem = workoutData[currentExKey][idx];
@@ -1071,13 +1081,13 @@
       if (key === 'weight') {
         title.innerText = `S${idx + 1} 세트 중량(kg) 직접 입력`;
         field.value = setItem.weight;
-        presetBox.innerHTML = [0, 5, 10, 15, 20, 30, 40, 60].map(val =>
+        presetBox.innerHTML = [0, 2.5, 5, 10, 15, 20, 30, 40].map(val =>
           `<button class="btn-preset" onclick="setQuickDirectVal(${val})">${val === 0 ? '맨몸(0)' : val + 'kg'}</button>`
         ).join('');
       } else {
         title.innerText = `S${idx + 1} 세트 반복 횟수(회) 직접 입력`;
         field.value = setItem.reps;
-        presetBox.innerHTML = [5, 8, 10, 12, 15, 20, 25, 30].map(val =>
+        presetBox.innerHTML = [2, 3, 5, 8, 10, 12, 15, 20].map(val =>
           `<button class="btn-preset" onclick="setQuickDirectVal(${val})">${val}회</button>`
         ).join('');
       }
@@ -1121,9 +1131,7 @@
       directEditTarget = { idx: null, key: null };
     }
 
-    /* =========================================
-       5. 정밀 타이머 제어
-       ========================================= */
+    /* 타이머 */
     function syncTimerUI() {
       if (!timerTarget) return;
       const remaining = Math.ceil((timerTarget - Date.now()) / 1000);
@@ -1166,9 +1174,7 @@
       document.getElementById('timer-island').style.display = 'none';
     }
 
-    /* =========================================
-       6. 종목 관리 모달
-       ========================================= */
+    /* 종목 관리 */
     function openExModal(mode) {
       modalMode = mode;
       const modal = document.getElementById('ex-modal');
@@ -1179,16 +1185,16 @@
         document.getElementById('ex-modal-title').innerText = '운동 설정 수정';
         document.getElementById('form-ex-name').value = ex.name;
         document.getElementById('form-ex-part').value = ex.part;
-        document.getElementById('form-ex-target').value = ex.targetReps || 12;
+        document.getElementById('form-ex-target').value = ex.targetReps || 10;
         document.getElementById('form-ex-rest').value = String(ex.rest);
         document.getElementById('form-ex-step').value = String(ex.step);
         delBtn.style.display = 'block';
       } else {
         document.getElementById('ex-modal-title').innerText = '새 운동 추가';
         document.getElementById('form-ex-name').value = '';
-        document.getElementById('form-ex-part').value = '가슴 & 전면삼각근';
-        document.getElementById('form-ex-target').value = 15;
-        document.getElementById('form-ex-rest').value = '60';
+        document.getElementById('form-ex-part').value = '광배근 & 상체 프레임';
+        document.getElementById('form-ex-target').value = 5;
+        document.getElementById('form-ex-rest').value = '90';
         document.getElementById('form-ex-step').value = '1';
         delBtn.style.display = 'none';
       }
@@ -1202,7 +1208,7 @@
     function saveExerciseModal() {
       const name = document.getElementById('form-ex-name').value.trim();
       const part = document.getElementById('form-ex-part').value;
-      const targetReps = Math.max(1, parseInt(document.getElementById('form-ex-target').value, 10) || 12);
+      const targetReps = Math.max(1, parseInt(document.getElementById('form-ex-target').value, 10) || 10);
       const rest = parseInt(document.getElementById('form-ex-rest').value, 10);
       const step = parseFloat(document.getElementById('form-ex-step').value);
 
@@ -1222,8 +1228,7 @@
         exercises[newKey] = { name, part, rest, step, defaultWeight: 0.0, defaultReps: targetReps, targetReps };
         workoutData[newKey] = [
           { id: 1, weight: 0.0, reps: targetReps, done: false },
-          { id: 2, weight: 0.0, reps: targetReps, done: false },
-          { id: 3, weight: 0.0, reps: Math.max(1, targetReps - 2), done: false }
+          { id: 2, weight: 0.0, reps: targetReps, done: false }
         ];
         currentExKey = newKey;
       }
@@ -1251,12 +1256,10 @@
       closeExModal();
     }
 
-    /* =========================================
-       7. 백업 & 복원 (JSON)
-       ========================================= */
+    /* 백업/복원 */
     function openBackupModal() {
       const payload = {
-        version: 'v10',
+        version: 'v11',
         exportedAt: new Date().toISOString(),
         exercises,
         workoutData
@@ -1329,15 +1332,12 @@
       reader.readAsText(file);
     }
 
-    /* =========================================
-       8. 스포츠 과학 논문 기반 자체 연산 엔진
-       ========================================= */
+    /* 기초 체력 맞춤 점진적 과부하 연산 엔진 */
     function finishWorkout() {
       let totalVol = 0;
       let totalReps = 0;
       let totalCompletedSets = 0;
 
-      // 부위별 세트 분류
       const partCounts = {
         '가슴(Push)': 0,
         '등·철봉(Pull)': 0,
@@ -1367,31 +1367,27 @@
             if (w > maxWeight) maxWeight = w;
           });
 
-          // 부위 분류 카운팅
           if (ex.part.includes('가슴')) partCounts['가슴(Push)'] += doneSets.length;
           else if (ex.part.includes('광배근')) partCounts['등·철봉(Pull)'] += doneSets.length;
           else if (ex.part.includes('어깨') || ex.part.includes('삼각근')) partCounts['어깨(Delt)'] += doneSets.length;
           else if (ex.part.includes('하체')) partCounts['하체(Legs)'] += doneSets.length;
           else if (ex.part.includes('코어') || ex.part.includes('복직근')) partCounts['코어(Core)'] += doneSets.length;
 
-          // Schoenfeld et al. (2021) 2중 진행법 & RIR 기반 과부하 판단
-          const target = ex.targetReps || 12;
+          const target = ex.targetReps || 10;
           const allHit = doneSets.every(s => s.reps >= target);
 
           if (maxWeight === 0) {
-            // 맨몸 운동 처방
             if (allHit) {
-              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회 수행):\n  🚀 [과부하 달성 / Schoenfeld 2021] 전 세트 ${target}회 완수 (RIR 0~1 도달). 다음 세션은 세트당 목표를 +2회 상향(총 ${target + 2}회)하거나 중량 조끼(+${ex.step}kg)를 도입하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회):\n  🚀 [체력 향상 성공] 전 세트 ${target}회 완수! 다음엔 딱 +1회 추가(세트당 ${target + 1}회)에 도전하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회 수행):\n  ⚓ [자세 유지 / RIR 1~2 목표] 목표치 미달 세트 존재. 난이도 상향 없이 전 세트 ${target}회를 정자세로 채우는 유효 반복수(Effective Reps) 축적에 집중하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회):\n  ⚓ [자세 집중] 지치지 않는 것이 우선입니다. 반동 없이 정자세로 ${target}회 유지를 목표로 하세요.`);
             }
           } else {
-            // 중량 웨이트 운동 처방
             if (allHit) {
               const nextWeight = (maxWeight + ex.step).toFixed(1);
-              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  🚀 [중량 증량 처방] 목표 반복수 완수. 기계적 장력(Mechanical Tension) 향상을 위해 다음 세션은 ${nextWeight}kg으로 시작하여 ${doneSets.length}세트 진행하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  🚀 [미세 과부하 달성] 목표 달성! 다음엔 최소 단위인 ${nextWeight}kg으로 세트를 시작하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  ⚓ [중량 동결] ${maxWeight}kg 유지. 실패 지점 직전의 유효 반복 확보를 위해 현재 중량에서 ${target}회 완수를 우선 달성하세요.`);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg):\n  ⚓ [중량 유지] 현재 ${maxWeight}kg 유지. 마지막 세트까지 흐트러짐 없이 채우는 지구력에 집중하세요.`);
             }
           }
         }
@@ -1408,34 +1404,20 @@
 
       document.getElementById('presc-targets').innerText = targetPrescriptions.join('\n\n');
 
-      // Baz-Valle (2022) 및 Helms (2015) 기반 논문 지표 분석
       const balanceNotes = [];
-      balanceNotes.push(`📊 세션 부위별 세트 분포:\n   가슴(Push) ${partCounts['가슴(Push)']}S | 등(Pull) ${partCounts['등·철봉(Pull)']}S | 어깨 ${partCounts['어깨(Delt)']}S | 하체 ${partCounts['하체(Legs)']}S | 코어 ${partCounts['코어(Core)']}S\n`);
+      balanceNotes.push(`📊 오늘 수행 세트: 가슴 ${partCounts['가슴(Push)']}S | 등 ${partCounts['등·철봉(Pull)']}S | 어깨 ${partCounts['어깨(Delt)']}S | 하체 ${partCounts['하체(Legs)']}S | 코어 ${partCounts['코어(Core)']}S\n`);
 
-      // 1. 유효 볼륨 및 정크 볼륨 판정 (Baz-Valle et al., 2022)
       Object.entries(partCounts).forEach(([part, count]) => {
-        if (count > 0 && count < 3) {
-          balanceNotes.push(`⚠️ [${part} 최소 자극 미달]: 단일 세션 1~2세트는 근단백질 합성(MPS)을 자극하기에 볼륨이 부족합니다 (최소 3~4세트 권장).`);
-        } else if (count >= 3 && count <= 6) {
-          balanceNotes.push(`✅ [${part} 최적 유효 볼륨]: 1세션 최적 성장 구간(3~6S) 충족. 정크 볼륨 없이 효율적인 자극을 완료했습니다.`);
-        } else if (count > 8) {
-          balanceNotes.push(`🛑 [${part} 정크 볼륨(Junk Volume) 경고]: 8세트 초과 시 근비대 효율은 급감하고 근육 피로만 누적됩니다 (Baz-Valle 2022). 세트 수를 줄이고 강도를 높이세요.`);
+        if (count === 1) {
+          balanceNotes.push(`💡 [${part}]: 1세트 완료. 다음엔 딱 1세트만 더 얹어 2세트 완수를 노려보세요.`);
+        } else if (count >= 2 && count <= 4) {
+          balanceNotes.push(`✅ [${part} 최적 볼륨]: 최소 유효 용량(2~4S) 충족. 무리한 피로 누적 없이 알맞게 자극했습니다.`);
+        } else if (count > 4) {
+          balanceNotes.push(`🛑 [${part} 체력 한계 경고]: 5세트 이상은 피로도가 급증합니다. 세트 수를 줄이고 집중도를 유지하세요.`);
         }
       });
 
-      // 2. 상체 전후면 구조 균형비 (Push : Pull Ratio)
-      const pushSets = partCounts['가슴(Push)'] + Math.floor(partCounts['어깨(Delt)'] * 0.5);
-      const pullSets = partCounts['등·철봉(Pull)'] + Math.floor(partCounts['어깨(Delt)'] * 0.3);
-      if (pushSets >= 4 && pullSets === 0) {
-        balanceNotes.push(`\n🚨 [전후면 불균형 주의]: 미는 운동(Push) 대비 당기는 운동(Pull)이 전무합니다. 견관절 안정성과 라운드 숄더 방지를 위해 풀업 또는 페이스 풀을 반드시 배치하세요.`);
-      }
-
-      // 3. 근단백질 합성(MPS) 주기 기반 회복 시간 (Damas et al., 2016)
-      if (totalCompletedSets <= 6) {
-        balanceNotes.push(`\n💤 [권장 회복 텀]: 총 ${totalCompletedSets}세트(저~중볼륨) 수행. MPS 주기는 24~36시간 내에 회복되므로 1일 휴식 후 다른 부위 훈련이 가능합니다.`);
-      } else {
-        balanceNotes.push(`\n💤 [권장 회복 텀]: 총 ${totalCompletedSets}세트(고볼륨) 수행. 완전한 초과회복(Supercompensation)을 위해 최소 48시간(2일 뒤) 휴식을 권장합니다.`);
-      }
+      balanceNotes.push(`\n💤 [권장 회복]: 관절과 신경계 회복을 위해 최소 48시간 이상 푹 쉰 후 다음 세션을 진행하세요.`);
 
       document.getElementById('presc-balance').innerText = balanceNotes.join('\n');
       document.getElementById('result-modal').style.display = 'flex';
@@ -1467,26 +1449,25 @@
         }
       });
 
-      const promptText = `당신은 운동생리학 메타분석 연구(Schoenfeld, Phillips, Helms 등)에 기반한 전문 스트렝스/근비대 코치입니다.
+      const promptText = `당신은 운동생리학 메타분석 연구에 기반한 전문 스트렝스/근비대 코치입니다.
 
 [오늘 수행된 훈련 데이터]
 ${summary.join('\n')}
 
 ---
 [요청 분석 과제]
-1. 정크 볼륨(Junk Volume) 여부 및 유효 반복수(Effective Reps/RIR) 추정 평가
-2. 전후면(Push vs Pull) 및 어깨 3면 밸런스 점검
-3. 점진적 과부하(Progressive Overload) 원칙에 따른 다음 세션 각 종목별 구체적 목표 수치(시작 kg, 반복 횟수, 권장 세트 수)
+1. 정크 볼륨 여부 및 유효 반복수(RIR 1~2) 달성도 평가
+2. 전후면(Push vs Pull) 및 상체 관절 구조 밸런스 점검
+3. 점진적 과부하 원칙에 따른 다음 세션 각 종목별 구체적 목표 수치(시작 kg, 반복 횟수, 권장 세트 수)
 4. 근단백질 합성(MPS) 주기 기반 권장 회복 시간`;
 
       navigator.clipboard.writeText(promptText).then(() => {
-        alert('논문 분석용 프롬프트가 복사되었습니다!\nGemini 웹이나 앱 채팅창에 [붙여넣기]하세요.');
+        alert('AI 분석용 프롬프트가 복사되었습니다!\n채팅창에 그대로 [붙여넣기]하세요.');
       }).catch(() => {
         prompt('아래 내용을 복사해 붙여넣으세요:', promptText);
       });
     }
 
-    // 초기화
     loadStorageData();
     renderPicker();
     render();
