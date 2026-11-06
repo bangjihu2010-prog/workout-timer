@@ -10,9 +10,12 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     body { background-color: #121212; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding-bottom: 90px; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #27272a; }
-    h1 { font-size: 18px; font-weight: 700; }
-    .badge { font-size: 11px; background: #27272a; color: #38bdf8; padding: 4px 8px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #27272a; }
+    
+    /* 종목 선택 셀렉트 박스 */
+    .exercise-select { background: #1e1e24; color: #ffffff; border: 1px solid #3f3f46; padding: 6px 10px; border-radius: 8px; font-size: 15px; font-weight: 700; outline: none; }
+    .badge { font-size: 11px; background: #27272a; color: #38bdf8; padding: 3px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+    
     .header-btns { display: flex; gap: 8px; }
     button { cursor: pointer; border: none; font-family: inherit; }
     .btn-sub { background: #27272a; color: #a1a1aa; padding: 6px 10px; border-radius: 6px; font-size: 12px; }
@@ -56,8 +59,13 @@
 
   <header>
     <div>
-      <h1 id="ex-name">사이드 레터럴 레이즈</h1>
-      <span class="badge" id="ex-part">측면삼각근 (휴식 60s)</span>
+      <select id="exercise-picker" class="exercise-select" onchange="changeExercise(this.value)">
+        <option value="ohp">오버헤드 프레스</option>
+        <option value="lateral" selected>사이드 레터럴 레이즈</option>
+        <option value="facepull">페이스 풀</option>
+      </select>
+      <br>
+      <span class="badge" id="ex-desc">측면삼각근 (휴식 60초 | 0.5kg 단위)</span>
     </div>
     <div class="header-btns">
       <button class="btn-sub" onclick="configureApiKey()">API 키</button>
@@ -102,165 +110,55 @@
   </div>
 
   <script>
-    const REST_DEFAULT = 60; // 초
-    const STEP_WEIGHT = 0.5; // kg 단위
-    let sets = JSON.parse(localStorage.getItem('workout_sets')) || [
-      { id: 1, weight: 12.0, reps: 15, done: false },
-      { id: 2, weight: 12.0, reps: 14, done: false },
-      { id: 3, weight: 12.0, reps: 12, done: false }
-    ];
+    // 종목별 마스터 설정
+    const EXERCISES = {
+      ohp: {
+        name: '오버헤드 프레스',
+        part: '전면·측면삼각근 (근력 축)',
+        rest: 120,
+        step: 2.5,
+        defaultWeight: 35.0,
+        defaultReps: 6
+      },
+      lateral: {
+        name: '사이드 레터럴 레이즈',
+        part: '측면삼각근 (프레임 너비)',
+        rest: 60,
+        step: 0.5,
+        defaultWeight: 12.0,
+        defaultReps: 15
+      },
+      facepull: {
+        name: '페이스 풀',
+        part: '후면삼각근 & 회전근개',
+        rest: 60,
+        step: 1.0,
+        defaultWeight: 20.0,
+        defaultReps: 12
+      }
+    };
+
+    let currentExKey = 'lateral';
+    let workoutData = JSON.parse(localStorage.getItem('workout_data_v2')) || {
+      ohp: [
+        { id: 1, weight: 35.0, reps: 6, done: false },
+        { id: 2, weight: 35.0, reps: 6, done: false },
+        { id: 3, weight: 35.0, reps: 5, done: false }
+      ],
+      lateral: [
+        { id: 1, weight: 12.0, reps: 15, done: false },
+        { id: 2, weight: 12.0, reps: 14, done: false },
+        { id: 3, weight: 12.0, reps: 12, done: false }
+      ],
+      facepull: [
+        { id: 1, weight: 20.0, reps: 15, done: false },
+        { id: 2, weight: 20.0, reps: 15, done: false },
+        { id: 3, weight: 20.0, reps: 12, done: false }
+      ]
+    };
 
     let timerTarget = null;
     let timerInterval = null;
 
-    function saveSets() {
-      localStorage.setItem('workout_sets', JSON.stringify(sets));
-    }
-
-    function render() {
-      const container = document.getElementById('set-list');
-      container.innerHTML = sets.map((s, idx) => `
-        <div class="set-row ${s.done ? 'done' : ''}">
-          <div class="set-num">${idx + 1}</div>
-          <div class="stepper">
-            <button class="step-btn" onclick="updateVal(${idx}, 'weight', -${STEP_WEIGHT})">-</button>
-            <span class="val-text">${s.weight.toFixed(1)}</span>
-            <button class="step-btn" onclick="updateVal(${idx}, 'weight', ${STEP_WEIGHT})">+</button>
-          </div>
-          <div class="stepper">
-            <button class="step-btn" onclick="updateVal(${idx}, 'reps', -1)">-</button>
-            <span class="val-text">${s.reps}</span>
-            <button class="step-btn" onclick="updateVal(${idx}, 'reps', 1)">+</button>
-          </div>
-          <div class="chk-btn ${s.done ? 'chk-done' : 'chk-pending'}" onclick="toggleSet(${idx})">
-            ${s.done ? '✓' : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function updateVal(idx, key, delta) {
-      if (sets[idx].done) return;
-      if (key === 'weight') sets[idx].weight = Math.max(0, parseFloat((sets[idx].weight + delta).toFixed(1)));
-      if (key === 'reps') sets[idx].reps = Math.max(1, sets[idx].reps + delta);
-      saveSets();
-      render();
-    }
-
-    function addSet() {
-      const last = sets[sets.length - 1];
-      sets.push({
-        id: Date.now(),
-        weight: last ? last.weight : 10.0,
-        reps: last ? last.reps : 12,
-        done: false
-      });
-      saveSets();
-      render();
-    }
-
-    function toggleSet(idx) {
-      sets[idx].done = !sets[idx].done;
-      saveSets();
-      render();
-      if (sets[idx].done) {
-        if ('vibrate' in navigator) navigator.vibrate(50);
-        startTimer(REST_DEFAULT);
-      }
-    }
-
-    // 타임스탬프 기반 오차 보정 타이머
-    function startTimer(sec) {
-      timerTarget = Date.now() + sec * 1000;
-      document.getElementById('timer-bar').style.display = 'flex';
-      if (timerInterval) clearInterval(timerInterval);
-
-      timerInterval = setInterval(() => {
-        const remaining = Math.ceil((timerTarget - Date.now()) / 1000);
-        if (remaining <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById('timer-bar').style.display = 'none';
-          if ('vibrate' in navigator) navigator.vibrate([200, 100, 200, 100, 200]);
-        } else {
-          const m = String(Math.floor(remaining / 60)).padStart(2, '0');
-          const s = String(remaining % 60).padStart(2, '0');
-          document.getElementById('timer-val').innerText = `${m}:${s}`;
-        }
-      }, 250);
-    }
-
-    function addTime(sec) {
-      if (!timerTarget) return;
-      timerTarget += sec * 1000;
-    }
-
-    function skipTimer() {
-      if (timerInterval) clearInterval(timerInterval);
-      document.getElementById('timer-bar').style.display = 'none';
-      timerTarget = null;
-    }
-
-    function finishWorkout() {
-      const doneSets = sets.filter(s => s.done);
-      const totalVol = doneSets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
-      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg`;
-      document.getElementById('res-sets').innerText = `${doneSets.length} 세트`;
-      document.getElementById('result-modal').style.display = 'block';
-    }
-
-    function configureApiKey() {
-      const current = localStorage.getItem('gemini_api_key') || '';
-      const key = prompt('Gemini API 키를 입력하세요 (브라우저 로컬에만 안전하게 저장됩니다):', current);
-      if (key !== null) localStorage.setItem('gemini_api_key', key.trim());
-    }
-
-    async function requestAiAnalysis() {
-      const apiKey = localStorage.getItem('gemini_api_key');
-      if (!apiKey) {
-        alert('우측 상단 [API 키] 버튼을 눌러 먼저 Gemini API 키를 등록하세요.');
-        return;
-      }
-
-      const doneSets = sets.filter(s => s.done);
-      const totalVol = doneSets.reduce((sum, s) => sum + (s.weight * s.reps), 0);
-      const box = document.getElementById('ai-result');
-      const reqBtn = document.getElementById('ai-req-btn');
-      
-      reqBtn.disabled = true;
-      box.innerText = 'AI가 어깨 볼륨과 과부하 데이터를 검사 중입니다...';
-
-      const promptText = `
-너는 엄격하고 비판적인 근비대 전문 보디빌딩 코치다. 모호한 칭찬이나 응원 문구는 일체 생략하고 아래 3대 지표만 냉정하게 평가하라.
-1. 점진적 과부하 평가: 세트 후반부 볼륨 유지 상태 및 중량 설정 평가
-2. 불균형 및 위험 경고: 측면삼각근 고립 운동으로서의 실패 지점 및 피로도 관리 위험
-3. 다음 세션 중량/반복 처방: 구체적인 증량 또는 볼륨 가이드
-
-[운동 데이터]
-종목: 사이드 레터럴 레이즈 (측면삼각근)
-완료 세트 수: ${doneSets.length}
-총 볼륨: ${totalVol}kg
-세트별 기록: ${JSON.stringify(doneSets.map(s => ({ weight: s.weight, reps: s.reps })))}
-`;
-
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptText }] }]
-          })
-        });
-        const data = await res.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        box.innerText = reply || '피드백을 불러오지 못했습니다.';
-      } catch (err) {
-        box.innerText = '통신 에러가 발생했습니다: ' + err.message;
-      } finally {
-        reqBtn.disabled = false;
-      }
-    }
-
-    render();
-  </script>
-</body>
-</html>
+    function save() {
+      localStorage.setItem('workout_data_v2', JSON.
