@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PRO IRON - 맨몸 & 웨이트 운동 엔진</title>
+  <title>PRO IRON - 맨몸 & 웨이트 트레이닝 엔진</title>
   <meta name="theme-color" content="#09090b">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PRO IRON">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -16,40 +18,54 @@
       --card-bg: #141418;
       --card-border: #27272a;
       --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.2);
+      --accent-glow: rgba(16, 185, 129, 0.22);
       --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.15);
       --text-main: #f4f4f5;
       --text-sub: #71717a;
       --danger: #f43f5e;
     }
-    
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; 
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text-main);
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding-bottom: 120px;
+      padding-bottom: 130px;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       user-select: none;
       -webkit-user-select: none;
     }
 
+    button {
+      font-family: inherit;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: transform 0.08s ease, background-color 0.12s ease, opacity 0.12s ease;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* 상단 헤더 */
     header {
-      padding: 16px 20px;
-      background: rgba(9, 9, 11, 0.85);
-      backdrop-filter: blur(12px);
+      padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 16px 20px;
+      background: rgba(9, 9, 11, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       position: sticky;
       top: 0;
       z-index: 20;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .header-top {
       display: flex;
@@ -57,25 +73,54 @@
       align-items: center;
       margin-bottom: 12px;
     }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .brand-title {
       font-size: 13px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.4px;
       color: var(--text-sub);
       text-transform: uppercase;
+    }
+    .wake-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3f3f46;
+      display: inline-block;
+    }
+    .wake-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn-util {
+      background: #18181b;
+      color: #a1a1aa;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #27272a;
     }
     .btn-finish-workout {
       background: rgba(244, 63, 94, 0.15);
       color: var(--danger);
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       border: 1px solid rgba(244, 63, 94, 0.3);
-      cursor: pointer;
     }
-    .btn-finish-workout:active { transform: scale(0.95); }
 
+    /* 종목 선택 바 */
     .exercise-bar {
       display: flex;
       align-items: center;
@@ -90,7 +135,7 @@
       background: #18181b;
       color: #fff;
       border: 1px solid #2e2e38;
-      padding: 10px 14px;
+      padding: 11px 32px 11px 14px;
       border-radius: 10px;
       font-size: 15px;
       font-weight: 700;
@@ -109,15 +154,15 @@
     .btn-manage {
       background: #18181b;
       color: var(--primary);
-      padding: 10px 12px;
+      padding: 11px 12px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
       border: 1px solid #2e2e38;
       white-space: nowrap;
-      cursor: pointer;
     }
 
+    /* 메타 정보 칩 */
     .meta-chips {
       display: flex;
       gap: 6px;
@@ -130,7 +175,7 @@
       border-radius: 6px;
       background: #18181b;
       color: #a1a1aa;
-      font-weight: 500;
+      font-weight: 600;
       border: 1px solid rgba(255, 255, 255, 0.04);
     }
     .chip-accent {
@@ -139,6 +184,7 @@
       border-color: rgba(56, 189, 248, 0.2);
     }
 
+    /* 메인 영역 */
     .content {
       padding: 16px 20px;
     }
@@ -150,31 +196,33 @@
       padding: 0 4px;
     }
     .section-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--text-sub);
       letter-spacing: 0.5px;
     }
 
+    /* 세트 카드 */
     .set-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+      transition: opacity 0.15s ease, border-color 0.15s ease;
     }
     .set-card.is-done {
       background: #0f0f13;
-      border-color: rgba(255, 255, 255, 0.03);
-      opacity: 0.45;
+      border-color: rgba(16, 185, 129, 0.25);
+      opacity: 0.55;
     }
 
     .set-tag {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: #52525b;
       min-width: 24px;
@@ -184,6 +232,7 @@
       color: var(--accent);
     }
 
+    /* 캡슐 스테퍼 */
     .stepper-capsule {
       flex: 1;
       display: flex;
@@ -196,7 +245,7 @@
     }
     .stepper-btn {
       width: 32px;
-      height: 32px;
+      height: 34px;
       border-radius: 8px;
       background: #1c1c22;
       color: #e4e4e7;
@@ -205,33 +254,42 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: none;
-      cursor: pointer;
+      flex-shrink: 0;
     }
     .stepper-btn:active {
       background: var(--primary);
       color: #000;
     }
     .stepper-val {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       min-width: 44px;
+      padding: 2px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .stepper-val:active {
+      background: rgba(56, 189, 248, 0.12);
     }
     .val-num {
       font-size: 15px;
       font-weight: 700;
       color: #fff;
       font-variant-numeric: tabular-nums;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
     }
     .val-unit {
       font-size: 9px;
       color: var(--text-sub);
       text-transform: uppercase;
       font-weight: 600;
-      margin-top: -1px;
+      margin-top: 1px;
     }
 
+    /* 완료 및 삭제 버튼 */
     .btn-complete {
       width: 42px;
       height: 42px;
@@ -244,7 +302,7 @@
       justify-content: center;
       font-size: 16px;
       font-weight: 800;
-      cursor: pointer;
+      flex-shrink: 0;
     }
     .btn-complete.done {
       background: var(--accent);
@@ -254,23 +312,28 @@
     }
     .btn-del {
       background: transparent;
-      color: #3f3f46;
-      font-size: 16px;
+      color: #52525b;
+      font-size: 15px;
       padding: 6px;
       border-radius: 6px;
-      border: none;
-      cursor: pointer;
+      flex-shrink: 0;
     }
     .btn-del:active {
       color: var(--danger);
     }
 
+    /* 하단 세트 액션 바 */
+    .set-action-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
     .btn-add-set {
-      width: 100%;
+      flex: 1;
       padding: 14px;
       border-radius: 12px;
-      background: rgba(56, 189, 248, 0.05);
-      border: 1px dashed rgba(56, 189, 248, 0.25);
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
       color: var(--primary);
       font-size: 14px;
       font-weight: 700;
@@ -278,22 +341,22 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      margin-top: 10px;
-      cursor: pointer;
     }
 
+    /* 플로팅 아일랜드 타이머 */
     #timer-island {
       display: none;
       position: fixed;
-      bottom: 24px;
-      left: 20px;
-      right: 20px;
-      background: rgba(24, 24, 27, 0.95);
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      left: 16px;
+      right: 16px;
+      background: rgba(24, 24, 27, 0.96);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(16, 185, 129, 0.15);
       border-radius: 18px;
-      padding: 14px 18px;
+      padding: 14px 16px;
       z-index: 100;
       overflow: hidden;
     }
@@ -302,9 +365,9 @@
       top: 0;
       left: 0;
       bottom: 0;
-      background: rgba(16, 185, 129, 0.08);
+      background: rgba(16, 185, 129, 0.1);
       z-index: 0;
-      transition: width 0.3s linear;
+      transition: width 0.2s linear;
     }
     .timer-content {
       position: relative;
@@ -334,29 +397,29 @@
     }
     .timer-btn-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
     .timer-action {
       background: #27272a;
       color: #fff;
-      padding: 8px 14px;
+      padding: 8px 11px;
       border-radius: 10px;
       font-size: 12px;
       font-weight: 700;
-      border: none;
-      cursor: pointer;
     }
     .timer-action-skip {
       background: #3f3f46;
-      color: #d4d4d8;
+      color: #e4e4e7;
     }
 
+    /* 모달 공통 */
     .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.78);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 200;
       align-items: flex-end;
       padding: 0;
@@ -368,7 +431,7 @@
       border-top-right-radius: 24px;
       border: 1px solid #27272a;
       border-bottom: none;
-      padding: 24px 20px 36px 20px;
+      padding: 20px 20px calc(32px + env(safe-area-inset-bottom, 0px)) 20px;
       box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.5);
       max-height: 90vh;
       overflow-y: auto;
@@ -378,14 +441,19 @@
       height: 4px;
       background: #3f3f46;
       border-radius: 2px;
-      margin: 0 auto 18px auto;
+      margin: 0 auto 16px auto;
     }
     .modal-title {
       font-size: 18px;
       font-weight: 800;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
     .form-label {
       font-size: 12px;
       font-weight: 600;
@@ -393,7 +461,7 @@
       margin-bottom: 6px;
       display: block;
     }
-    .input-field, .select-field {
+    .input-field, .select-field, .textarea-field {
       width: 100%;
       background: #0d0d10;
       border: 1px solid #27272a;
@@ -404,30 +472,72 @@
       font-weight: 600;
       outline: none;
       margin-bottom: 14px;
+      font-family: inherit;
+    }
+    .input-field:focus, .select-field:focus, .textarea-field:focus {
+      border-color: var(--primary);
     }
 
-    .stat-grid {
+    /* 직접 숫자 입력 모달 전용 */
+    .direct-input-display {
+      width: 100%;
+      background: #09090b;
+      border: 2px solid var(--primary);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .quick-Preset-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .btn-preset {
+      background: #1e1e24;
+      border: 1px solid #2e2e38;
+      color: #e4e4e7;
+      padding: 10px 6px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .btn-preset:active {
+      background: var(--primary);
+      color: #000;
+    }
+
+    /* 결과 통계 3단 그리드 */
+    .stat-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
       margin-bottom: 16px;
     }
     .stat-tile {
       background: #0d0d10;
       border: 1px solid #222228;
-      padding: 14px;
+      padding: 12px 10px;
       border-radius: 14px;
+      text-align: center;
     }
     .stat-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-sub);
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.4px;
     }
     .stat-number {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 800;
       color: #fff;
       margin-top: 4px;
+      font-variant-numeric: tabular-nums;
     }
 
     .prescription-card {
@@ -447,7 +557,7 @@
     }
     .prescription-body {
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.65;
       color: #d4d4d8;
       white-space: pre-line;
     }
@@ -455,7 +565,16 @@
     .action-btn-row {
       display: flex;
       gap: 8px;
-      margin-top: 14px;
+      margin-top: 12px;
+    }
+    .btn-primary-full {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #000;
+      font-size: 14px;
+      font-weight: 800;
     }
     .btn-copy-prompt {
       flex: 1;
@@ -466,10 +585,11 @@
       color: #fff;
       font-size: 13px;
       font-weight: 700;
-      cursor: pointer;
     }
-    .btn-copy-prompt:active { background: #38bdf8; color: #000; }
-    
+    .btn-copy-prompt:active {
+      background: var(--primary);
+      color: #000;
+    }
     .btn-sheet-close {
       width: 100%;
       padding: 12px;
@@ -479,8 +599,6 @@
       font-size: 13px;
       font-weight: 600;
       margin-top: 10px;
-      border: none;
-      cursor: pointer;
     }
     .btn-sheet-reset {
       width: 100%;
@@ -490,8 +608,6 @@
       font-size: 12px;
       font-weight: 600;
       margin-top: 6px;
-      border: none;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -499,8 +615,14 @@
 
   <header>
     <div class="header-top">
-      <span class="brand-title">Pro Workout Engine</span>
-      <button class="btn-finish-workout" onclick="finishWorkout()">운동 종료 & 처방</button>
+      <div class="brand-group">
+        <span id="wake-indicator" class="wake-dot" title="화면 켜짐 유지 상태"></span>
+        <span class="brand-title">Pro Iron Engine</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-util" onclick="openBackupModal()">백업/복원</button>
+        <button class="btn-finish-workout" onclick="finishWorkout()">운동 종료 & 처방</button>
+      </div>
     </div>
 
     <div class="exercise-bar">
@@ -514,6 +636,7 @@
 
     <div class="meta-chips">
       <span id="chip-part" class="chip chip-accent"></span>
+      <span id="chip-target" class="chip"></span>
       <span id="chip-rest" class="chip"></span>
       <span id="chip-step" class="chip"></span>
     </div>
@@ -521,17 +644,20 @@
 
   <main class="content">
     <div class="section-header">
-      <span class="section-title">SET LOGS</span>
+      <span class="section-title">SET LOGS (숫자 탭하여 직접 입력)</span>
       <span class="section-title" id="completed-count">0 / 0 완료</span>
     </div>
 
     <div id="set-list"></div>
 
-    <button class="btn-add-set" onclick="addSet()">
-      <span>+</span> 세트 추가
-    </button>
+    <div class="set-action-row">
+      <button class="btn-add-set" onclick="addSet()">
+        <span>+</span> 직전 세트 복제 추가
+      </button>
+    </div>
   </main>
 
+  <!-- 플로팅 아일랜드 타이머 -->
   <aside id="timer-island">
     <div id="timer-progress" class="timer-progress"></div>
     <div class="timer-content">
@@ -540,20 +666,36 @@
         <span id="timer-val" class="timer-clock">01:00</span>
       </div>
       <div class="timer-btn-group">
+        <button class="timer-action" onclick="addTime(-10)">-10s</button>
+        <button class="timer-action" onclick="addTime(10)">+10s</button>
         <button class="timer-action" onclick="addTime(30)">+30s</button>
         <button class="timer-action timer-action-skip" onclick="skipTimer()">스킵</button>
       </div>
     </div>
   </aside>
 
+  <!-- 직접 숫자 입력 모달 (Direct Input) -->
+  <div id="direct-input-modal" class="modal-backdrop" onclick="if(event.target===this) closeDirectInput()">
+    <div class="modal-sheet">
+      <div class="modal-grabber"></div>
+      <h2 id="direct-input-title" class="modal-title">수치 직접 입력</h2>
+      <input type="number" id="direct-input-field" class="direct-input-display" inputmode="decimal" step="any">
+      <div id="direct-preset-container" class="quick-Preset-grid"></div>
+      <div class="action-btn-row">
+        <button class="btn-primary-full" onclick="applyDirectInput()">적용하기</button>
+      </div>
+      <button class="btn-sheet-close" onclick="closeDirectInput()">취소</button>
+    </div>
+  </div>
+
   <!-- 종목 설정 모달 -->
-  <div id="ex-modal" class="modal-backdrop">
+  <div id="ex-modal" class="modal-backdrop" onclick="if(event.target===this) closeExModal()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
       <h2 id="ex-modal-title" class="modal-title">운동 종목 설정</h2>
-      
+
       <label class="form-label">운동 이름</label>
-      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 푸쉬업">
+      <input type="text" id="form-ex-name" class="input-field" placeholder="예: 중량 풀업">
 
       <label class="form-label">타깃 부위</label>
       <select id="form-ex-part" class="select-field">
@@ -566,193 +708,276 @@
         <option value="기타 전신">기타 전신</option>
       </select>
 
-      <label class="form-label">세트 간 휴식 시간</label>
+      <div class="form-row-2">
+        <div>
+          <label class="form-label">과부하 목표 횟수 (회)</label>
+          <input type="number" id="form-ex-target" class="input-field" inputmode="numeric" placeholder="예: 12">
+        </div>
+        <div>
+          <label class="form-label">중량 증감 단위 (+/-)</label>
+          <select id="form-ex-step" class="select-field">
+            <option value="0.5">0.5 kg</option>
+            <option value="1">1.0 kg</option>
+            <option value="2">2.0 kg</option>
+            <option value="2.5">2.5 kg</option>
+            <option value="5">5.0 kg</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="form-label">세트 간 기본 휴식 시간</label>
       <select id="form-ex-rest" class="select-field">
         <option value="30">30초 (짧은 맨몸 인터벌)</option>
         <option value="45">45초 (기본 맨몸/코어)</option>
         <option value="60">60초 (기본 고립/푸쉬업)</option>
         <option value="90">90초 (철봉/복합 운동)</option>
         <option value="120">120초 (고중량 웨이트)</option>
+        <option value="180">180초 (최대 스트렝스)</option>
       </select>
 
-      <label class="form-label">중량 조절 단위 (+/-)</label>
-      <select id="form-ex-step" class="select-field">
-        <option value="0.5">0.5 kg (미세 조절)</option>
-        <option value="1">1.0 kg (중량 조끼/덤벨)</option>
-        <option value="2">2.0 kg</option>
-        <option value="2.5">2.5 kg (원판 단위)</option>
-        <option value="5">5.0 kg</option>
-      </select>
-
-      <div style="display:flex; gap:8px; margin-top:8px;">
-        <button style="flex:1; padding:14px; background:var(--primary); color:#000; border-radius:12px; font-weight:700; border:none; cursor:pointer;" onclick="saveExerciseModal()">저장 완료</button>
-        <button id="btn-delete-ex" style="padding:14px; background:rgba(244,63,94,0.15); color:var(--danger); border-radius:12px; font-weight:700; border:none; cursor:pointer;" onclick="deleteCurrentExercise()">삭제</button>
+      <div class="action-btn-row">
+        <button class="btn-primary-full" onclick="saveExerciseModal()">저장 완료</button>
+        <button id="btn-delete-ex" style="padding:14px 18px; background:rgba(244,63,94,0.15); color:var(--danger); border-radius:12px; font-weight:700;" onclick="deleteCurrentExercise()">삭제</button>
       </div>
       <button class="btn-sheet-close" onclick="closeExModal()">취소</button>
     </div>
   </div>
 
+  <!-- 데이터 백업 및 복원 모달 -->
+  <div id="backup-modal" class="modal-backdrop" onclick="if(event.target===this) closeBackupModal()">
+    <div class="modal-sheet">
+      <div class="modal-grabber"></div>
+      <h2 class="modal-title">데이터 백업 및 복원 (JSON)</h2>
+      <label class="form-label">현재 운동 설정 및 세트 기록 데이터</label>
+      <textarea id="backup-json-area" class="textarea-field" rows="5" placeholder="여기에 백업 JSON 코드를 붙여넣거나 아래 버튼으로 파일 저장/불러오기를 실행하세요."></textarea>
+
+      <div class="action-btn-row">
+        <button class="btn-copy-prompt" onclick="downloadBackupFile()">💾 파일로 저장</button>
+        <button class="btn-copy-prompt" onclick="copyBackupText()">📋 텍스트 복사</button>
+      </div>
+      <div class="action-btn-row">
+        <button class="btn-primary-full" onclick="restoreFromText()">🔄 위 텍스트로 데이터 복원</button>
+        <label style="flex:1; padding:14px; border-radius:12px; background:#27272a; border:1px solid #3f3f46; color:#fff; font-size:13px; font-weight:700; text-align:center; cursor:pointer;">
+          📂 파일 불러오기
+          <input type="file" accept=".json,application/json" style="display:none;" onchange="uploadBackupFile(event)">
+        </label>
+      </div>
+      <button class="btn-sheet-close" onclick="closeBackupModal()">닫기</button>
+    </div>
+  </div>
+
   <!-- 결과 및 즉시 처방 모달 -->
-  <div id="result-modal" class="modal-backdrop">
+  <div id="result-modal" class="modal-backdrop" onclick="if(event.target===this) closeResultModal()">
     <div class="modal-sheet">
       <div class="modal-grabber"></div>
       <h2 class="modal-title">세션 분석 & 다음 루틴 처방</h2>
 
-      <div class="stat-grid">
+      <div class="stat-grid-3">
         <div class="stat-tile">
-          <span class="stat-label">TOTAL VOLUME</span>
+          <span class="stat-label">TOTAL REPS</span>
+          <div id="res-reps" class="stat-number">0 회</div>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-label">ADDED VOL</span>
           <div id="res-volume" class="stat-number">0 kg</div>
         </div>
         <div class="stat-tile">
-          <span class="stat-label">COMPLETED SETS</span>
+          <span class="stat-label">COMPLETED</span>
           <div id="res-sets" class="stat-number">0 SETS</div>
         </div>
       </div>
 
       <div class="prescription-card">
-        <div class="prescription-title">🎯 다음 운동 세션 목표 처방</div>
+        <div class="prescription-title">🎯 종목별 점진적 과부하 처방</div>
         <div id="presc-targets" class="prescription-body"></div>
       </div>
 
       <div class="prescription-card" style="border-left-color: var(--primary);">
-        <div class="prescription-title" style="color: var(--primary);">⚖️ 상체 밸런스 & 휴식 가이드</div>
+        <div class="prescription-title" style="color: var(--primary);">⚖️ 부위별 볼륨 밸런스 & 회복 가이드</div>
         <div id="presc-balance" class="prescription-body"></div>
       </div>
 
       <div class="action-btn-row">
-        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 Gemini 웹용 질문 복사</button>
+        <button class="btn-copy-prompt" onclick="copyWorkoutPrompt()">📋 AI 코칭용 상세 로그 복사</button>
       </div>
 
       <button class="btn-sheet-close" onclick="closeResultModal()">닫기</button>
-      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 풀기 (새 운동 시작)</button>
+      <button class="btn-sheet-reset" onclick="resetAllWorkout()">세션 완료 체크 초기화 (새 운동 시작)</button>
     </div>
   </div>
 
   <script>
+    /* =========================================
+       1. 기본 프리셋 및 안전한 스토리지 초기화
+       ========================================= */
     const DEFAULT_EXERCISES = {
-      // 간단한 맨몸 운동 라인업
       pushup: { name: '푸쉬업 (팔굽혀펴기)', part: '가슴 & 전면삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
-      knee_pushup: { name: '니 푸쉬업 (무릎 대고)', part: '가슴 기초 & 워밍업', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
+      knee_pushup: { name: '니 푸쉬업 (무릎 대고)', part: '가슴 & 전면삼각근', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 },
       diamond_pushup: { name: '다이아몬드 푸쉬업', part: '가슴 & 삼두근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
-      decline_pushup: { name: '디클라인 푸쉬업', part: '어깨 삼각근 & 윗가슴', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
-      squat: { name: '맨몸 스쿼트', part: '하체 대퇴 & 둔근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
+      decline_pushup: { name: '디클라인 푸쉬업', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
+      squat: { name: '맨몸 스쿼트', part: '하체 대퇴 & 둔근', rest: 60, step: 1.0, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
       crunch: { name: '크런치 (복근)', part: '복직근 & 코어', rest: 45, step: 0.5, defaultWeight: 0.0, defaultReps: 20, targetReps: 25 },
-
-      // 철봉 운동
       pullup: { name: '풀업 (턱걸이)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
       chinup: { name: '친업 (언더그립)', part: '광배근 & 상체 프레임', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 8, targetReps: 10 },
       dips: { name: '딥스 (평행봉)', part: '가슴 & 삼두근', rest: 90, step: 1.0, defaultWeight: 0.0, defaultReps: 10, targetReps: 12 },
       hanging_legraise: { name: '행잉 레그레이즈', part: '복직근 & 코어', rest: 60, step: 0.5, defaultWeight: 0.0, defaultReps: 12, targetReps: 15 },
-
-      // 웨이트 운동
       ohp: { name: '오버헤드 프레스', part: '어깨 삼각근', rest: 120, step: 2.5, defaultWeight: 35.0, defaultReps: 6, targetReps: 8 },
       lateral: { name: '사이드 레터럴 레이즈', part: '어깨 삼각근', rest: 60, step: 0.5, defaultWeight: 12.0, defaultReps: 15, targetReps: 15 },
       facepull: { name: '페이스 풀', part: '어깨 삼각근', rest: 60, step: 1.0, defaultWeight: 20.0, defaultReps: 12, targetReps: 15 }
     };
 
     const DEFAULT_SETS = {
-      pushup: [
-        { id: 1, weight: 0.0, reps: 15, done: false },
-        { id: 2, weight: 0.0, reps: 15, done: false },
-        { id: 3, weight: 0.0, reps: 12, done: false }
-      ],
-      knee_pushup: [
-        { id: 1, weight: 0.0, reps: 15, done: false },
-        { id: 2, weight: 0.0, reps: 15, done: false },
-        { id: 3, weight: 0.0, reps: 15, done: false }
-      ],
-      diamond_pushup: [
-        { id: 1, weight: 0.0, reps: 10, done: false },
-        { id: 2, weight: 0.0, reps: 10, done: false },
-        { id: 3, weight: 0.0, reps: 8, done: false }
-      ],
-      decline_pushup: [
-        { id: 1, weight: 0.0, reps: 12, done: false },
-        { id: 2, weight: 0.0, reps: 12, done: false },
-        { id: 3, weight: 0.0, reps: 10, done: false }
-      ],
-      squat: [
-        { id: 1, weight: 0.0, reps: 20, done: false },
-        { id: 2, weight: 0.0, reps: 20, done: false },
-        { id: 3, weight: 0.0, reps: 20, done: false }
-      ],
-      crunch: [
-        { id: 1, weight: 0.0, reps: 20, done: false },
-        { id: 2, weight: 0.0, reps: 20, done: false },
-        { id: 3, weight: 0.0, reps: 15, done: false }
-      ],
-      pullup: [
-        { id: 1, weight: 0.0, reps: 8, done: false },
-        { id: 2, weight: 0.0, reps: 7, done: false },
-        { id: 3, weight: 0.0, reps: 6, done: false }
-      ],
-      chinup: [
-        { id: 1, weight: 0.0, reps: 8, done: false },
-        { id: 2, weight: 0.0, reps: 7, done: false },
-        { id: 3, weight: 0.0, reps: 6, done: false }
-      ],
-      dips: [
-        { id: 1, weight: 0.0, reps: 10, done: false },
-        { id: 2, weight: 0.0, reps: 10, done: false },
-        { id: 3, weight: 0.0, reps: 8, done: false }
-      ],
-      hanging_legraise: [
-        { id: 1, weight: 0.0, reps: 12, done: false },
-        { id: 2, weight: 0.0, reps: 12, done: false },
-        { id: 3, weight: 0.0, reps: 10, done: false }
-      ],
-      ohp: [
-        { id: 1, weight: 35.0, reps: 6, done: false },
-        { id: 2, weight: 35.0, reps: 6, done: false },
-        { id: 3, weight: 35.0, reps: 5, done: false }
-      ],
-      lateral: [
-        { id: 1, weight: 12.0, reps: 15, done: false },
-        { id: 2, weight: 12.0, reps: 14, done: false },
-        { id: 3, weight: 12.0, reps: 12, done: false }
-      ],
-      facepull: [
-        { id: 1, weight: 20.0, reps: 15, done: false },
-        { id: 2, weight: 20.0, reps: 15, done: false },
-        { id: 3, weight: 20.0, reps: 12, done: false }
-      ]
+      pushup: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }, { id: 3, weight: 0.0, reps: 12, done: false }],
+      knee_pushup: [{ id: 1, weight: 0.0, reps: 15, done: false }, { id: 2, weight: 0.0, reps: 15, done: false }, { id: 3, weight: 0.0, reps: 15, done: false }],
+      diamond_pushup: [{ id: 1, weight: 0.0, reps: 10, done: false }, { id: 2, weight: 0.0, reps: 10, done: false }, { id: 3, weight: 0.0, reps: 8, done: false }],
+      decline_pushup: [{ id: 1, weight: 0.0, reps: 12, done: false }, { id: 2, weight: 0.0, reps: 12, done: false }, { id: 3, weight: 0.0, reps: 10, done: false }],
+      squat: [{ id: 1, weight: 0.0, reps: 20, done: false }, { id: 2, weight: 0.0, reps: 20, done: false }, { id: 3, weight: 0.0, reps: 20, done: false }],
+      crunch: [{ id: 1, weight: 0.0, reps: 20, done: false }, { id: 2, weight: 0.0, reps: 20, done: false }, { id: 3, weight: 0.0, reps: 15, done: false }],
+      pullup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 7, done: false }, { id: 3, weight: 0.0, reps: 6, done: false }],
+      chinup: [{ id: 1, weight: 0.0, reps: 8, done: false }, { id: 2, weight: 0.0, reps: 7, done: false }, { id: 3, weight: 0.0, reps: 6, done: false }],
+      dips: [{ id: 1, weight: 0.0, reps: 10, done: false }, { id: 2, weight: 0.0, reps: 10, done: false }, { id: 3, weight: 0.0, reps: 8, done: false }],
+      hanging_legraise: [{ id: 1, weight: 0.0, reps: 12, done: false }, { id: 2, weight: 0.0, reps: 12, done: false }, { id: 3, weight: 0.0, reps: 10, done: false }],
+      ohp: [{ id: 1, weight: 35.0, reps: 6, done: false }, { id: 2, weight: 35.0, reps: 6, done: false }, { id: 3, weight: 35.0, reps: 5, done: false }],
+      lateral: [{ id: 1, weight: 12.0, reps: 15, done: false }, { id: 2, weight: 12.0, reps: 14, done: false }, { id: 3, weight: 12.0, reps: 12, done: false }],
+      facepull: [{ id: 1, weight: 20.0, reps: 15, done: false }, { id: 2, weight: 20.0, reps: 15, done: false }, { id: 3, weight: 20.0, reps: 12, done: false }]
     };
+
+    const STORAGE_EX_KEY = 'custom_exercises_v9';
+    const STORAGE_SETS_KEY = 'workout_sets_v9';
 
     let exercises = {};
     let workoutData = {};
     let currentExKey = 'pushup';
     let modalMode = 'add';
+
+    // 직접 입력 타깃 상태
+    let directEditTarget = { idx: null, key: null };
+
+    // 타이머 상태
     let timerTarget = null;
     let timerTotalSec = 60;
     let timerInterval = null;
 
-    try {
-      const savedEx = localStorage.getItem('custom_exercises_v9');
-      const savedSets = localStorage.getItem('workout_sets_v9');
-      exercises = savedEx ? JSON.parse(savedEx) : JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
-      workoutData = savedSets ? JSON.parse(savedSets) : JSON.parse(JSON.stringify(DEFAULT_SETS));
-      if (!exercises || Object.keys(exercises).length === 0) exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
-    } catch (e) {
-      exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
-      workoutData = JSON.parse(JSON.stringify(DEFAULT_SETS));
-    }
+    function loadStorageData() {
+      try {
+        const savedEx = localStorage.getItem(STORAGE_EX_KEY);
+        const savedSets = localStorage.getItem(STORAGE_SETS_KEY);
+        exercises = savedEx ? JSON.parse(savedEx) : JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+        workoutData = savedSets ? JSON.parse(savedSets) : JSON.parse(JSON.stringify(DEFAULT_SETS));
 
-    currentExKey = Object.keys(exercises)[0];
+        if (!exercises || typeof exercises !== 'object' || Object.keys(exercises).length === 0) {
+          exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+        }
+        // 스키마 무결성 보정 (targetReps 누락 방지)
+        Object.keys(exercises).forEach(k => {
+          if (!exercises[k].targetReps) exercises[k].targetReps = exercises[k].defaultReps || 12;
+          if (!Array.isArray(workoutData[k]) || workoutData[k].length === 0) {
+            workoutData[k] = [{ id: Date.now(), weight: exercises[k].defaultWeight || 0, reps: exercises[k].defaultReps || 12, done: false }];
+          }
+        });
+      } catch (e) {
+        exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+        workoutData = JSON.parse(JSON.stringify(DEFAULT_SETS));
+      }
+      currentExKey = Object.keys(exercises)[0];
+    }
 
     function save() {
       try {
-        localStorage.setItem('custom_exercises_v9', JSON.stringify(exercises));
-        localStorage.setItem('workout_sets_v9', JSON.stringify(workoutData));
+        localStorage.setItem(STORAGE_EX_KEY, JSON.stringify(exercises));
+        localStorage.setItem(STORAGE_SETS_KEY, JSON.stringify(workoutData));
       } catch (e) {}
     }
 
+    /* =========================================
+       2. iOS/모바일 오디오 언락 & Wake Lock 제어
+       ========================================= */
+    let sharedAudioCtx = null;
+    let audioUnlocked = false;
+
+    function initAndUnlockAudio() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!sharedAudioCtx) sharedAudioCtx = new AudioContextClass();
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+
+        if (!audioUnlocked) {
+          const buffer = sharedAudioCtx.createBuffer(1, 1, 22050);
+          const source = sharedAudioCtx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(sharedAudioCtx.destination);
+          source.start(0);
+          audioUnlocked = true;
+        }
+      } catch (e) {}
+    }
+
+    function playBeep() {
+      try {
+        initAndUnlockAudio();
+        if (!sharedAudioCtx) return;
+        const now = sharedAudioCtx.currentTime;
+        // 헬스장 소음에서도 잘 들리는 2연속 고주파 비프음
+        [0, 0.22].forEach(offset => {
+          const osc = sharedAudioCtx.createOscillator();
+          const gain = sharedAudioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now + offset);
+          osc.frequency.setValueAtTime(1046.5, now + offset + 0.08);
+          gain.gain.setValueAtTime(0.18, now + offset);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.18);
+          osc.connect(gain);
+          gain.connect(sharedAudioCtx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.19);
+        });
+      } catch (e) {}
+    }
+
+    let wakeLockSentinel = null;
+
+    async function requestWakeLock() {
+      if (!('wakeLock' in navigator)) return;
+      try {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+        document.getElementById('wake-indicator').classList.add('active');
+        wakeLockSentinel.addEventListener('release', () => {
+          document.getElementById('wake-indicator').classList.remove('active');
+        });
+      } catch (e) {}
+    }
+
+    // 최초 터치 시 오디오 언락 및 Wake Lock 가동
+    window.addEventListener('touchstart', () => {
+      initAndUnlockAudio();
+      if (!wakeLockSentinel) requestWakeLock();
+    }, { once: true, passive: true });
+
+    window.addEventListener('click', () => {
+      initAndUnlockAudio();
+      if (!wakeLockSentinel) requestWakeLock();
+    }, { once: true });
+
+    // 백그라운드 전환 후 복귀 시 Wake Lock 재연결 및 타이머 즉시 동기화
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        requestWakeLock();
+        if (timerTarget) syncTimerUI();
+      }
+    });
+
+    /* =========================================
+       3. UI 렌더링 및 세트 조작
+       ========================================= */
     function renderPicker() {
       const picker = document.getElementById('exercise-picker');
-      picker.innerHTML = Object.keys(exercises).map(k => 
+      picker.innerHTML = Object.keys(exercises).map(k =>
         `<option value="${k}" ${k === currentExKey ? 'selected' : ''}>${exercises[k].name}</option>`
       ).join('');
       const ex = exercises[currentExKey];
       document.getElementById('chip-part').innerText = ex.part;
+      document.getElementById('chip-target').innerText = `목표 ${ex.targetReps || 12}회`;
       document.getElementById('chip-rest').innerText = `휴식 ${ex.rest}s`;
       document.getElementById('chip-step').innerText = `단위 ${ex.step}kg`;
     }
@@ -761,84 +986,6 @@
       currentExKey = key;
       renderPicker();
       render();
-    }
-
-    function openExModal(mode) {
-      modalMode = mode;
-      const modal = document.getElementById('ex-modal');
-      const delBtn = document.getElementById('btn-delete-ex');
-
-      if (mode === 'edit') {
-        const ex = exercises[currentExKey];
-        document.getElementById('ex-modal-title').innerText = '운동 설정 수정';
-        document.getElementById('form-ex-name').value = ex.name;
-        document.getElementById('form-ex-part').value = ex.part;
-        document.getElementById('form-ex-rest').value = String(ex.rest);
-        document.getElementById('form-ex-step').value = String(ex.step);
-        delBtn.style.display = 'block';
-      } else {
-        document.getElementById('ex-modal-title').innerText = '새 운동 추가';
-        document.getElementById('form-ex-name').value = '';
-        document.getElementById('form-ex-part').value = '가슴 & 전면삼각근';
-        document.getElementById('form-ex-rest').value = '60';
-        document.getElementById('form-ex-step').value = '1';
-        delBtn.style.display = 'none';
-      }
-      modal.style.display = 'flex';
-    }
-
-    function closeExModal() {
-      document.getElementById('ex-modal').style.display = 'none';
-    }
-
-    function saveExerciseModal() {
-      const name = document.getElementById('form-ex-name').value.trim();
-      const part = document.getElementById('form-ex-part').value;
-      const rest = parseInt(document.getElementById('form-ex-rest').value, 10);
-      const step = parseFloat(document.getElementById('form-ex-step').value);
-
-      if (!name) {
-        alert('운동 이름을 입력하세요.');
-        return;
-      }
-
-      if (modalMode === 'edit') {
-        exercises[currentExKey].name = name;
-        exercises[currentExKey].part = part;
-        exercises[currentExKey].rest = rest;
-        exercises[currentExKey].step = step;
-      } else {
-        const newKey = 'ex_' + Date.now();
-        exercises[newKey] = { name, part, rest, step, defaultWeight: 0.0, defaultReps: 15, targetReps: 20 };
-        workoutData[newKey] = [
-          { id: 1, weight: 0.0, reps: 15, done: false },
-          { id: 2, weight: 0.0, reps: 15, done: false },
-          { id: 3, weight: 0.0, reps: 12, done: false }
-        ];
-        currentExKey = newKey;
-      }
-
-      save();
-      renderPicker();
-      render();
-      closeExModal();
-    }
-
-    function deleteCurrentExercise() {
-      const keys = Object.keys(exercises);
-      if (keys.length <= 1) {
-        alert('최소 1개 종목은 있어야 합니다.');
-        return;
-      }
-      if (!confirm(`'${exercises[currentExKey].name}' 종목을 삭제할까요?`)) return;
-
-      delete exercises[currentExKey];
-      delete workoutData[currentExKey];
-      currentExKey = Object.keys(exercises)[0];
-      save();
-      renderPicker();
-      render();
-      closeExModal();
     }
 
     function render() {
@@ -856,7 +1003,7 @@
 
           <div class="stepper-capsule">
             <button class="stepper-btn" onclick="updateVal(${idx}, 'weight', -${ex.step})">-</button>
-            <div class="stepper-val">
+            <div class="stepper-val" onclick="openDirectInput(${idx}, 'weight')" title="탭하여 직접 입력">
               <span class="val-num">${Number(s.weight) === 0 ? '맨몸' : Number(s.weight).toFixed(1)}</span>
               <span class="val-unit">${Number(s.weight) === 0 ? 'BODY' : 'KG'}</span>
             </div>
@@ -865,7 +1012,7 @@
 
           <div class="stepper-capsule">
             <button class="stepper-btn" onclick="updateVal(${idx}, 'reps', -1)">-</button>
-            <div class="stepper-val">
+            <div class="stepper-val" onclick="openDirectInput(${idx}, 'reps')" title="탭하여 직접 입력">
               <span class="val-num">${s.reps}</span>
               <span class="val-unit">REPS</span>
             </div>
@@ -880,9 +1027,13 @@
 
     function updateVal(idx, key, delta) {
       const sets = workoutData[currentExKey];
-      if (!sets || !sets[idx] || sets[idx].done) return;
-      if (key === 'weight') sets[idx].weight = Math.max(0, parseFloat((Number(sets[idx].weight) + delta).toFixed(1)));
-      if (key === 'reps') sets[idx].reps = Math.max(1, sets[idx].reps + delta);
+      if (!sets || !sets[idx]) return;
+      if (key === 'weight') {
+        sets[idx].weight = Math.max(0, parseFloat((Number(sets[idx].weight) + delta).toFixed(1)));
+      }
+      if (key === 'reps') {
+        sets[idx].reps = Math.max(1, parseInt(sets[idx].reps, 10) + delta);
+      }
       save();
       render();
     }
@@ -899,6 +1050,7 @@
         reps: last ? Number(last.reps) : (ex.defaultReps || 15),
         done: false
       });
+      if ('vibrate' in navigator) navigator.vibrate(25);
       save();
       render();
     }
@@ -926,19 +1078,89 @@
       }
     }
 
-    function playBeep() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.type = 'sine';
-        osc.frequency.value = 880;
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      } catch (e) {}
+    /* =========================================
+       4. 직접 숫자 입력 (Direct Input) 모달 제어
+       ========================================= */
+    function openDirectInput(idx, key) {
+      directEditTarget = { idx, key };
+      const setItem = workoutData[currentExKey][idx];
+      const field = document.getElementById('direct-input-field');
+      const title = document.getElementById('direct-input-title');
+      const presetBox = document.getElementById('direct-preset-container');
+
+      if (key === 'weight') {
+        title.innerText = `S${idx + 1} 세트 중량(kg) 직접 입력`;
+        field.value = setItem.weight;
+        presetBox.innerHTML = [0, 5, 10, 15, 20, 30, 40, 60].map(val =>
+          `<button class="btn-preset" onclick="setQuickDirectVal(${val})">${val === 0 ? '맨몸(0)' : val + 'kg'}</button>`
+        ).join('');
+      } else {
+        title.innerText = `S${idx + 1} 세트 반복 횟수(회) 직접 입력`;
+        field.value = setItem.reps;
+        presetBox.innerHTML = [5, 8, 10, 12, 15, 20, 25, 30].map(val =>
+          `<button class="btn-preset" onclick="setQuickDirectVal(${val})">${val}회</button>`
+        ).join('');
+      }
+
+      document.getElementById('direct-input-modal').style.display = 'flex';
+      setTimeout(() => {
+        field.focus();
+        field.select();
+      }, 60);
+    }
+
+    function setQuickDirectVal(val) {
+      document.getElementById('direct-input-field').value = val;
+      applyDirectInput();
+    }
+
+    function applyDirectInput() {
+      const { idx, key } = directEditTarget;
+      if (idx === null || !key) return;
+      const rawVal = parseFloat(document.getElementById('direct-input-field').value);
+      if (isNaN(rawVal)) {
+        closeDirectInput();
+        return;
+      }
+
+      const sets = workoutData[currentExKey];
+      if (sets && sets[idx]) {
+        if (key === 'weight') {
+          sets[idx].weight = Math.max(0, parseFloat(rawVal.toFixed(1)));
+        } else {
+          sets[idx].reps = Math.max(1, Math.round(rawVal));
+        }
+        save();
+        render();
+      }
+      closeDirectInput();
+    }
+
+    function closeDirectInput() {
+      document.getElementById('direct-input-modal').style.display = 'none';
+      directEditTarget = { idx: null, key: null };
+    }
+
+    /* =========================================
+       5. 정밀 백그라운드 타이머
+       ========================================= */
+    function syncTimerUI() {
+      if (!timerTarget) return;
+      const remaining = Math.ceil((timerTarget - Date.now()) / 1000);
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerTarget = null;
+        document.getElementById('timer-island').style.display = 'none';
+        if ('vibrate' in navigator) navigator.vibrate([220, 100, 220, 100, 280]);
+        playBeep();
+      } else {
+        const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+        const s = String(remaining % 60).padStart(2, '0');
+        document.getElementById('timer-val').innerText = `${m}:${s}`;
+        const progressPercent = Math.min(100, Math.max(0, ((timerTotalSec - remaining) / timerTotalSec) * 100));
+        document.getElementById('timer-progress').style.width = `${progressPercent}%`;
+      }
     }
 
     function startTimer(sec) {
@@ -946,40 +1168,193 @@
       timerTarget = Date.now() + sec * 1000;
       document.getElementById('timer-island').style.display = 'block';
       if (timerInterval) clearInterval(timerInterval);
-
-      timerInterval = setInterval(() => {
-        const remaining = Math.ceil((timerTarget - Date.now()) / 1000);
-        if (remaining <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById('timer-island').style.display = 'none';
-          if ('vibrate' in navigator) navigator.vibrate([200, 100, 200, 100, 200]);
-          playBeep();
-        } else {
-          const m = String(Math.floor(remaining / 60)).padStart(2, '0');
-          const s = String(remaining % 60).padStart(2, '0');
-          document.getElementById('timer-val').innerText = `${m}:${s}`;
-          
-          const progressPercent = ((timerTotalSec - remaining) / timerTotalSec) * 100;
-          document.getElementById('timer-progress').style.width = `${progressPercent}%`;
-        }
-      }, 250);
+      syncTimerUI();
+      timerInterval = setInterval(syncTimerUI, 250);
     }
 
     function addTime(sec) {
       if (!timerTarget) return;
       timerTarget += sec * 1000;
-      timerTotalSec += sec;
+      timerTotalSec = Math.max(10, timerTotalSec + sec);
+      syncTimerUI();
     }
 
     function skipTimer() {
       if (timerInterval) clearInterval(timerInterval);
-      document.getElementById('timer-island').style.display = 'none';
+      timerInterval = null;
       timerTarget = null;
+      document.getElementById('timer-island').style.display = 'none';
     }
 
-    // 자체 연산 엔진 (맨몸 및 웨이트 통합 점진적 과부하 처방)
+    /* =========================================
+       6. 종목 추가/수정 모달
+       ========================================= */
+    function openExModal(mode) {
+      modalMode = mode;
+      const modal = document.getElementById('ex-modal');
+      const delBtn = document.getElementById('btn-delete-ex');
+
+      if (mode === 'edit') {
+        const ex = exercises[currentExKey];
+        document.getElementById('ex-modal-title').innerText = '운동 설정 수정';
+        document.getElementById('form-ex-name').value = ex.name;
+        document.getElementById('form-ex-part').value = ex.part;
+        document.getElementById('form-ex-target').value = ex.targetReps || 12;
+        document.getElementById('form-ex-rest').value = String(ex.rest);
+        document.getElementById('form-ex-step').value = String(ex.step);
+        delBtn.style.display = 'block';
+      } else {
+        document.getElementById('ex-modal-title').innerText = '새 운동 추가';
+        document.getElementById('form-ex-name').value = '';
+        document.getElementById('form-ex-part').value = '가슴 & 전면삼각근';
+        document.getElementById('form-ex-target').value = 15;
+        document.getElementById('form-ex-rest').value = '60';
+        document.getElementById('form-ex-step').value = '1';
+        delBtn.style.display = 'none';
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeExModal() {
+      document.getElementById('ex-modal').style.display = 'none';
+    }
+
+    function saveExerciseModal() {
+      const name = document.getElementById('form-ex-name').value.trim();
+      const part = document.getElementById('form-ex-part').value;
+      const targetReps = Math.max(1, parseInt(document.getElementById('form-ex-target').value, 10) || 12);
+      const rest = parseInt(document.getElementById('form-ex-rest').value, 10);
+      const step = parseFloat(document.getElementById('form-ex-step').value);
+
+      if (!name) {
+        alert('운동 이름을 입력하세요.');
+        return;
+      }
+
+      if (modalMode === 'edit') {
+        exercises[currentExKey].name = name;
+        exercises[currentExKey].part = part;
+        exercises[currentExKey].targetReps = targetReps;
+        exercises[currentExKey].rest = rest;
+        exercises[currentExKey].step = step;
+      } else {
+        const newKey = 'ex_' + Date.now();
+        exercises[newKey] = { name, part, rest, step, defaultWeight: 0.0, defaultReps: targetReps, targetReps };
+        workoutData[newKey] = [
+          { id: 1, weight: 0.0, reps: targetReps, done: false },
+          { id: 2, weight: 0.0, reps: targetReps, done: false },
+          { id: 3, weight: 0.0, reps: Math.max(1, targetReps - 2), done: false }
+        ];
+        currentExKey = newKey;
+      }
+
+      save();
+      renderPicker();
+      render();
+      closeExModal();
+    }
+
+    function deleteCurrentExercise() {
+      const keys = Object.keys(exercises);
+      if (keys.length <= 1) {
+        alert('최소 1개 종목은 있어야 합니다.');
+        return;
+      }
+      if (!confirm(`'${exercises[currentExKey].name}' 종목을 삭제할까요?`)) return;
+
+      delete exercises[currentExKey];
+      delete workoutData[currentExKey];
+      currentExKey = Object.keys(exercises)[0];
+      save();
+      renderPicker();
+      render();
+      closeExModal();
+    }
+
+    /* =========================================
+       7. 데이터 백업 및 복원 (JSON Export/Import)
+       ========================================= */
+    function openBackupModal() {
+      const payload = {
+        version: 'v9',
+        exportedAt: new Date().toISOString(),
+        exercises,
+        workoutData
+      };
+      document.getElementById('backup-json-area').value = JSON.stringify(payload, null, 2);
+      document.getElementById('backup-modal').style.display = 'flex';
+    }
+
+    function closeBackupModal() {
+      document.getElementById('backup-modal').style.display = 'none';
+    }
+
+    function copyBackupText() {
+      const text = document.getElementById('backup-json-area').value;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('백업 JSON 데이터가 클립보드에 복사되었습니다.');
+      }).catch(() => {
+        alert('텍스트 영역을 길게 눌러 직접 복사해주세요.');
+      });
+    }
+
+    function downloadBackupFile() {
+      const text = document.getElementById('backup-json-area').value;
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `pro_iron_backup_${dateStr}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function applyRestoredPayload(parsed) {
+      if (!parsed || !parsed.exercises || !parsed.workoutData) {
+        throw new Error('유효하지 않은 백업 데이터 형식입니다.');
+      }
+      exercises = parsed.exercises;
+      workoutData = parsed.workoutData;
+      currentExKey = Object.keys(exercises)[0];
+      save();
+      renderPicker();
+      render();
+      closeBackupModal();
+      alert('데이터가 성공적으로 복원되었습니다.');
+    }
+
+    function restoreFromText() {
+      try {
+        const raw = document.getElementById('backup-json-area').value.trim();
+        const parsed = JSON.parse(raw);
+        applyRestoredPayload(parsed);
+      } catch (e) {
+        alert('복원 실패: 올바른 JSON 데이터가 아닙니다.\n' + e.message);
+      }
+    }
+
+    function uploadBackupFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          applyRestoredPayload(parsed);
+        } catch (err) {
+          alert('파일 복원 실패: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* =========================================
+       8. 세션 분석 및 2중 진행법 처방 엔진
+       ========================================= */
     function finishWorkout() {
       let totalVol = 0;
+      let totalReps = 0;
       let totalCompletedSets = 0;
       const partCounts = { '가슴·푸쉬업': 0, '등·철봉': 0, '어깨': 0, '하체': 0, '코어': 0 };
       const targetPrescriptions = [];
@@ -991,31 +1366,39 @@
 
         if (doneSets.length > 0) {
           totalCompletedSets += doneSets.length;
-          doneSets.forEach(s => totalVol += (s.weight * s.reps));
+          let exReps = 0;
+          let maxWeight = 0;
 
-          // 부위별 집계
+          doneSets.forEach(s => {
+            const w = Number(s.weight) || 0;
+            const r = Number(s.reps) || 0;
+            totalVol += (w * r);
+            totalReps += r;
+            exReps += r;
+            if (w > maxWeight) maxWeight = w;
+          });
+
           if (ex.part.includes('가슴')) partCounts['가슴·푸쉬업'] += doneSets.length;
           else if (ex.part.includes('광배근')) partCounts['등·철봉'] += doneSets.length;
-          else if (ex.part.includes('어깨')) partCounts['어깨'] += doneSets.length;
+          else if (ex.part.includes('어깨') || ex.part.includes('삼각근')) partCounts['어깨'] += doneSets.length;
           else if (ex.part.includes('하체')) partCounts['하체'] += doneSets.length;
           else if (ex.part.includes('코어') || ex.part.includes('복직근')) partCounts['코어'] += doneSets.length;
 
-          // 2중 진행법 적용
-          const topSet = doneSets[0];
-          const allHit = doneSets.every(s => s.reps >= (ex.targetReps || 15));
+          const target = ex.targetReps || 12;
+          const allHit = doneSets.every(s => s.reps >= target);
 
-          if (topSet.weight === 0) {
+          if (maxWeight === 0) {
             if (allHit) {
-              targetPrescriptions.push(`• ${ex.name}: 🚀 [목표 돌파] 전 세트 ${ex.targetReps}회 완수! 다음엔 중량 조끼 착용(+${ex.step}kg) 또는 더 어려운 변형 동작(다이아몬드/디클라인)으로 난이도를 올리세요.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회): 🚀 [목표 달성] 전 세트 ${target}회 완수! 다음 세션은 세트당 ${target + 2}회로 목표를 높이거나 중량(+${ex.step}kg)을 추가하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name}: ⚓ [반복수 집중] 전 세트 목표치(${ex.targetReps}회)를 흐트러짐 없이 채울 수 있을 때까지 맨몸 반복수 누적에 집중.`);
+              targetPrescriptions.push(`• ${ex.name} (총 ${exReps}회): ⚓ [반복수 누적] 전 세트 ${target}회를 깔끔한 정자세로 채울 때까지 맨몸 볼륨 누적에 집중하세요.`);
             }
           } else {
             if (allHit) {
-              const nextWeight = (topSet.weight + ex.step).toFixed(1);
-              targetPrescriptions.push(`• ${ex.name}: 🚀 [중량 증량] 전 세트 목표치 달성! 다음엔 ${nextWeight}kg으로 ${doneSets.length}세트 진행.`);
+              const nextWeight = (maxWeight + ex.step).toFixed(1);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg): 🚀 [증량 처방] 전 세트 ${target}회 달성! 다음엔 ${nextWeight}kg으로 증량하여 ${doneSets.length}세트 도전하세요.`);
             } else {
-              targetPrescriptions.push(`• ${ex.name}: ⚓ [중량 유지] 현재 ${topSet.weight}kg 유지. 모든 세트를 최소 ${ex.targetReps || 10}회 채우는 데 집중.`);
+              targetPrescriptions.push(`• ${ex.name} (최고 ${maxWeight}kg): ⚓ [중량 유지] ${maxWeight}kg을 유지하며 모든 세트를 ${target}회 채우는 데 집중하세요.`);
             }
           }
         }
@@ -1026,16 +1409,19 @@
         return;
       }
 
-      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg (추가중량)`;
+      document.getElementById('res-reps').innerText = `${totalReps.toLocaleString()} 회`;
+      document.getElementById('res-volume').innerText = `${totalVol.toLocaleString()} kg`;
       document.getElementById('res-sets').innerText = `${totalCompletedSets} SETS`;
 
       document.getElementById('presc-targets').innerText = targetPrescriptions.join('\n\n');
 
-      let balanceText = `수행 세트: 가슴·푸쉬업 ${partCounts['가슴·푸쉬업']}S | 등·철봉 ${partCounts['등·철봉']}S | 어깨 ${partCounts['어깨']}S | 하체 ${partCounts['하체']}S | 코어 ${partCounts['코어']}S\n`;
-      if (partCounts['가슴·푸쉬업'] >= 4 && partCounts['등·철봉'] === 0) {
-        balanceText += `💡 [균형 권장] 미는 푸쉬업 동작이 많습니다. 라운드 숄더 방지를 위해 당기는 풀업이나 밴드 로우를 짝지어 진행하세요.\n`;
+      let balanceText = `수행 세트: 가슴 ${partCounts['가슴·푸쉬업']}S | 등·철봉 ${partCounts['등·철봉']}S | 어깨 ${partCounts['어깨']}S | 하체 ${partCounts['하체']}S | 코어 ${partCounts['코어']}S\n`;
+      if (partCounts['가슴·푸쉬업'] >= 3 && partCounts['등·철봉'] === 0) {
+        balanceText += `⚠️ [전후면 불균형 주의] 미는 운동(푸쉬업/딥스) 비중이 높습니다. 라운드 숄더 예방을 위해 다음엔 풀업이나 페이스풀을 반드시 포함하세요.\n`;
+      } else if (partCounts['등·철봉'] >= 3 && partCounts['가슴·푸쉬업'] === 0 && partCounts['어깨'] === 0) {
+        balanceText += `💡 [루틴 팁] 당기는 철봉 운동을 충분히 수행했습니다. 푸쉬업이나 딥스를 3세트 곁들이면 상체 프레임이 고르게 발달합니다.\n`;
       }
-      balanceText += `💤 [휴식 시간] 가슴과 전면 어깨 근육 회복을 위해 최소 24~48시간 휴식을 권장합니다.`;
+      balanceText += `💤 [권장 휴식] 훈련한 근육군의 초과회복을 위해 최소 48시간 휴식 후 동일 부위 세션을 진행하세요.`;
 
       document.getElementById('presc-balance').innerText = balanceText;
       document.getElementById('result-modal').style.display = 'flex';
@@ -1062,20 +1448,22 @@
         if (!ex) return;
         const done = workoutData[k].filter(s => s.done);
         if (done.length > 0) {
-          const setsStr = done.map((s, i) => `${i+1}세트: ${s.weight === 0 ? '맨몸' : s.weight + 'kg'} x ${s.reps}회`).join(', ');
-          summary.push(`- ${ex.name} (${ex.part}): ${setsStr}`);
+          const setsStr = done.map((s, i) => `${i + 1}세트: ${Number(s.weight) === 0 ? '맨몸' : s.weight + 'kg'} x ${s.reps}회`).join(', ');
+          summary.push(`- ${ex.name} (${ex.part} | 목표 ${ex.targetReps}회): ${setsStr}`);
         }
       });
 
-      const promptText = `맨몸운동 및 상체 웨이트 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하와 부위별 볼륨 밸런스 평가\n2. 다음 운동 세션 각 종목별 구체적인 목표 횟수 및 난이도 처방\n3. 권장 회복 시간`;
+      const promptText = `맨몸운동 및 웨이트 운동 피드백 부탁해.\n\n[오늘 수행한 운동 기록]\n${summary.join('\n')}\n\n1. 점진적 과부하 달성도 및 상·하체/전·후면 볼륨 밸런스 비판적 평가\n2. 다음 운동 세션 각 종목별 구체적인 목표 중량(kg), 목표 횟수, 세트 수 처방\n3. 권장 회복 시간`;
 
       navigator.clipboard.writeText(promptText).then(() => {
-        alert('운동 기록이 복사되었습니다!\nGemini 웹이나 앱 채팅창에 그대로 [붙여넣기]하세요.');
+        alert('운동 기록이 복사되었습니다!\n채팅창에 그대로 [붙여넣기]하세요.');
       }).catch(() => {
-        prompt('아래 내용을 복사해 Gemini에 붙여넣으세요:', promptText);
+        prompt('아래 내용을 복사해 붙여넣으세요:', promptText);
       });
     }
 
+    // 초기 실행
+    loadStorageData();
     renderPicker();
     render();
   </script>
